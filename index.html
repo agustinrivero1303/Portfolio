@@ -50,6 +50,12 @@ nav .brand{font-weight:800;text-decoration:none;color:var(--ink);white-space:now
 nav ul{display:flex;gap:4px;list-style:none;margin:0 0 0 auto;padding:0;overflow-x:auto;scrollbar-width:none}
 nav ul a{display:block;padding:8px 10px;color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:500;white-space:nowrap;border-radius:6px}
 nav ul a:hover{color:var(--ink);background:var(--tag)}
+.language{display:flex;align-items:center;gap:2px;flex:none;margin-left:4px;font:500 .82rem var(--mono);white-space:nowrap}
+.language button{min-width:34px;min-height:36px;padding:4px 6px;border:1px solid transparent;border-radius:6px;background:transparent;color:var(--muted);font:inherit;cursor:pointer}
+.language button:hover,.language button[aria-pressed="true"]{background:var(--tag);color:var(--ink)}
+.language button[aria-pressed="true"]{border-color:var(--line)}
+.language span{color:var(--line)}
+@media (max-width:640px){nav .wrap{gap:8px}.language{margin-left:0;gap:0}.language button{min-width:30px;padding:4px 3px}.themes{gap:5px}.themes button{width:24px;height:24px}}
 @media (max-width:640px){nav .brand{display:none}nav ul{margin:0}}
 
 section{padding:72px 0;border-bottom:1px solid var(--line)}
@@ -149,6 +155,7 @@ footer{padding:28px 0;color:var(--muted);font-size:.88rem}
       <li><a href="#experience">Experience</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <div class="language" role="group" aria-label="Language"><button type="button" data-language="en" aria-pressed="true" aria-label="English" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-language="es" aria-pressed="false" aria-label="Spanish" title="Spanish">ES</button></div>
     <div class="themes" role="group" aria-label="Colour theme"><button type="button" data-t="light" aria-pressed="false" aria-label="White theme" title="White"></button><button type="button" data-t="dark" aria-pressed="false" aria-label="Dark theme" title="Dark"></button><button type="button" data-t="galaxy" aria-pressed="false" aria-label="Galaxy theme" title="Galaxy"></button></div>
   </div>
 </nav>
@@ -162,7 +169,7 @@ footer{padding:28px 0;color:var(--muted);font-size:.88rem}
       <p class="lead">Passionate about the combination of mechanical, electronic, and software systems to develop innovative engineering solutions.</p>
       <div class="btns">
         <a class="btn" href="#projects">View Projects</a>
-        <a class="btn alt" href="mailto:agustinrivero1303@gmail.com?subject=Resume%20request%20-%20Agust%C3%ADn%20Rivero%20Martel" id="resume">Download Resume</a>
+        <a class="btn alt" href="mailto:agustinrivero1303@gmail.com" id="resume">Request Resume</a>
       </div>
     </div>
     <figure class="photo"><span class="fr"><img src="Images/UR3e%20arm%20with%20with%20parts%20tray%20on%20bench.jpeg" width="1200" height="1600" alt="UR3e collaborative robot arm with a gripper, set up on a lab bench"></span><figcaption>The UR3e used in my Robot Trainer project.</figcaption></figure>
@@ -329,8 +336,10 @@ footer{padding:28px 0;color:var(--muted);font-size:.88rem}
 <script>
 document.getElementById('cf').addEventListener('submit',function(e){
   e.preventDefault();
-  var f=e.target,n=f.name.value,m=f.msg.value+'\n\nFrom: '+n+' ('+f.email.value+')';
-  location.href='mailto:agustinrivero1303@gmail.com?subject='+encodeURIComponent('Portfolio message from '+n)+'&body='+encodeURIComponent(m);
+  var f=e.target,n=f.name.value,es=document.documentElement.lang==='es';
+  var m=f.msg.value+'\n\n'+(es?'De: ':'From: ')+n+' ('+f.email.value+')';
+  var subject=es?'Mensaje desde el portafolio de '+n:'Portfolio message from '+n;
+  location.href='mailto:agustinrivero1303@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(m);
   document.getElementById('status').textContent='Opening your email app. If nothing happens, email me directly at agustinrivero1303@gmail.com.';
 });
 </script>
@@ -578,6 +587,140 @@ function init(){
   document.addEventListener('visibilitychange',go);
 }
 new IntersectionObserver(function(en,ob){if(en[0].isIntersecting&&!started){started=true;ob.disconnect();load(init)}},{rootMargin:'200px'}).observe(box);
+})();
+</script>
+<script>
+(function(){
+var es={
+  "Main":"Navegación principal","About":"Sobre mí","Projects":"Proyectos","Skills":"Habilidades","Experience":"Experiencia","Contact":"Contacto",
+  "Language":"Idioma","English":"Inglés","Spanish":"Español","Colour theme":"Tema de color","White theme":"Tema claro","Dark theme":"Tema oscuro","Galaxy theme":"Tema galaxia","White":"Claro","Dark":"Oscuro","Galaxy":"Galaxia",
+  "Agustín Rivero Martel | Mechatronic Engineer":"Agustín Rivero Martel | Ingeniero mecatrónico",
+  "Mechatronic engineer building robots, embedded systems and industrial control. DCU MEng 2026. EU passport holder.":"Ingeniero mecatrónico que desarrolla robots, sistemas integrados y soluciones de control industrial. Máster en DCU (2026). Ciudadano de la UE.",
+  "Mechatronic Engineer":"Ingeniero mecatrónico",
+  "Passionate about the combination of mechanical, electronic, and software systems to develop innovative engineering solutions.":"Me apasiona combinar sistemas mecánicos, electrónicos y de software para desarrollar soluciones de ingeniería innovadoras.",
+  "View Projects":"Ver proyectos","Request Resume":"Solicitar CV",
+  "The UR3e used in my Robot Trainer project.":"El UR3e utilizado en mi proyecto Robot Trainer.",
+  "Interactive two-joint robot arm. Drag the joints or use the sliders to change the angles.":"Brazo robótico interactivo de dos articulaciones. Arrastra las articulaciones o usa los controles deslizantes para cambiar los ángulos.",
+  "Two-joint manipulator, the model behind my Robot Trainer project. Drag the elbow or the tip, or use the sliders.":"Manipulador de dos articulaciones, el modelo de mi proyecto Robot Trainer. Arrastra el codo o el extremo, o usa los controles deslizantes.",
+  "Joint 1 angle in degrees":"Ángulo de la articulación 1 en grados","Joint 2 angle in degrees":"Ángulo de la articulación 2 en grados",
+  "About me":"Sobre mí",
+  "I'm a mechatronic engineer graduate from Dublin City University. I build things that move and think: autonomous vehicles, pneumatic climbers, embedded timers and industrial control panels. I've worked on wastewater treatment plant electrical design at Murphy International and taught engineering labs at DCU. My philosophy is simple: model it, build it, test it, then fix what the test shows. I'm most interested in robotics, control systems and low-level embedded code.":"Me gradué en Ingeniería Mecatrónica en Dublin City University. Construyo sistemas que se mueven y piensan: vehículos autónomos, robots neumáticos trepadores, temporizadores integrados y cuadros de control industrial. He trabajado en el diseño eléctrico de plantas de tratamiento de aguas residuales en Murphy International y he impartido prácticas de ingeniería en DCU. Mi filosofía es sencilla: modelar, construir, probar y corregir lo que revelen las pruebas. Me interesan especialmente la robótica, los sistemas de control y la programación de bajo nivel.",
+  "MEng, DCU, Aug 2026":"Máster en Ingeniería, DCU, ago. 2026","2:1 Hons, 3.3 GPA":"Honores 2:1, promedio 3,3","EU passport holder":"Ciudadano de la UE","English, Spanish, German":"Inglés, español y alemán",
+  "Featured engineering projects":"Proyectos de ingeniería destacados",
+  "Final Year Master's Project":"Proyecto de fin de máster","2025 – 2026 · Dublin City University":"2025–2026 · Dublin City University",
+  "A UR3e teaching rig that makes robot kinematics visible to students.":"Un equipo didáctico con un UR3e que ayuda a visualizar la cinemática robótica.",
+  "Problem / goal":"Problema y objetivo",
+  "Robotics theory is hard to connect to real hardware. The goal is a demonstrator students can use to validate kinematics theory from the DCU Robotics module.":"Es difícil relacionar la teoría de la robótica con el hardware real. El objetivo es crear un demostrador con el que el alumnado pueda validar la teoría de cinemática del módulo de Robótica de DCU.",
+  "My role and actions":"Mi función y contribuciones",
+  "I locked four of the UR3e's six joints so only the base and elbow move, derived its forward kinematics with the Denavit-Hartenberg convention, and reduced it to two symbolic transformation matrices. I programmed a four-waypoint pick-and-place in PolyScope and designed the student lab exercise around it.":"Bloqueé cuatro de las seis articulaciones del UR3e para que solo se movieran la base y el codo, calculé su cinemática directa mediante la convención de Denavit–Hartenberg y la reduje a dos matrices de transformación simbólicas. Programé una secuencia de recogida y colocación con cuatro puntos de referencia en PolyScope y diseñé la práctica de laboratorio para el alumnado.",
+  "Tech stack and methods":"Tecnologías y métodos","Forward kinematics":"Cinemática directa","Homogeneous transforms":"Transformaciones homogéneas",
+  "Result":"Resultado",
+  "The robot performs four movements in a pick-and-place sequence. Each is a unique combination of the base angle θ1 and the elbow angle θ3, the only two moving joints. The other four joints stay fixed, so the six-axis UR3e behaves like a two-axis arm. For each waypoint, the kinematic model's predicted tool position was compared with the PolyScope teach pendant. The x and y positions matched within 0.3 to 14.3 mm. The z position was off by a consistent 25.8 to 29.9 mm, most likely because the model uses nominal rather than factory-calibrated DH parameters.":"El robot ejecuta cuatro movimientos en una secuencia de recogida y colocación. Cada uno combina de forma distinta el ángulo de la base θ1 y el del codo θ3, las únicas articulaciones móviles. Las otras cuatro permanecen fijas, por lo que el UR3e de seis ejes funciona como un brazo de dos ejes. En cada punto de referencia se comparó la posición de la herramienta prevista por el modelo cinemático con la indicada por el mando PolyScope. Las posiciones x e y coincidieron con diferencias de entre 0,3 y 14,3 mm. La posición z presentó una diferencia constante de entre 25,8 y 29,9 mm, probablemente porque el modelo usa parámetros DH nominales y no los calibrados de fábrica.",
+  "Waypoint":"Punto de referencia","Difference between model and teach pendant, in mm.":"Diferencia entre el modelo y el mando PolyScope, en mm.",
+  "Media":"Material audiovisual","Video of the UR3e Robot Trainer in operation":"Vídeo del Robot Trainer UR3e en funcionamiento","Your browser cannot play this video.":"Tu navegador no puede reproducir este vídeo.",
+  "Agustín presenting the UR3e Robot Trainer with its teach pendant at the DCU project expo":"Agustín presenta el Robot Trainer UR3e con su mando en la exposición de proyectos de DCU",
+  "Presenting at the DCU expo, May 2026":"Presentación en la exposición de DCU, mayo de 2026",
+  "UR3e arm with gripper and parts trays on the lab bench":"Brazo UR3e con pinza y bandejas de piezas sobre la mesa del laboratorio","UR3e demonstrator setup":"Montaje del demostrador UR3e",
+  "GitHub repository":"Perfil de GitHub","Request demo or report":"Solicitar una demostración o el informe",
+  "Automated Guided Vehicle (AGV) · Team project · Dublin City University":"Vehículo de guiado automático (AGV) · Proyecto en equipo · Dublin City University",
+  "A custom-engineered chassis and multi-function AGV, built from scratch and fully operational.":"Chasis diseñado a medida y AGV multifunción, construido desde cero y plenamente operativo.",
+  "Overview":"Descripción general",
+  "This project highlights a custom-designed Automated Guided Vehicle (AGV) featuring a fully custom-engineered chassis and expanded multi-function operational capabilities.":"Este proyecto presenta un vehículo de guiado automático (AGV) diseñado a medida, con un chasis propio y capacidades operativas multifunción ampliadas.",
+  "Key highlights":"Aspectos destacados",
+  "Custom chassis architecture:":"Arquitectura del chasis a medida:","a purpose-built chassis and cover, designed in CAD rather than taken from a kit.":"chasis y cubierta diseñados en CAD específicamente para el proyecto, en lugar de usar un kit.",
+  "Multi-functional payload and autonomy integration:":"Integración de carga multifunción y autonomía:","several functions combined in one vehicle.":"varias funciones combinadas en un mismo vehículo.",
+  "Enhanced mobility:":"Movilidad mejorada:","steering and locomotion driven by custom embedded C.":"dirección y movimiento controlados mediante software integrado en C, desarrollado a medida.",
+  "Co-engineer. I architected, integrated and debugged the low-level embedded C that drives the steering and locomotion mechanisms.":"Coingeniero. Diseñé la arquitectura, integré y depuré el código C integrado de bajo nivel que controla los mecanismos de dirección y movimiento.",
+  "Embedded C":"C integrado","Motor control":"Control de motores","Steering and drive":"Dirección y tracción","System integration":"Integración de sistemas",
+  "Delivered a fully working autonomous vehicle built from scratch. Add speed, accuracy or lap results here.":"Se entregó un vehículo autónomo plenamente funcional, construido desde cero. Añade aquí datos de velocidad, precisión o tiempos por vuelta.",
+  "3D model":"Modelo 3D","Loading 3D model...":"Cargando modelo 3D...","3D view is not available on this device.":"La vista 3D no está disponible en este dispositivo.",
+  "Interactive 3D model of the autonomous mobile robot. Drag to rotate, or use the arrow keys.":"Modelo 3D interactivo del robot móvil autónomo. Arrástralo para girarlo o usa las teclas de flecha.",
+  "Shell: solid":"Carcasa: sólida","Shell: x-ray":"Carcasa: rayos X","Shell: off":"Carcasa: desactivada","Reset view":"Restablecer vista",
+  "Drag to rotate. Use the Shell button to switch between solid, x-ray and off. Lower servos sit on the same axis as the arms. Upper servos inside the head drive the grey eyebrow discs through a linkage. The front cables run from the breadboard to the green optical sensor. Parts are separate meshes, and proportions and wire routing are estimated from the photos and videos.":"Arrastra para girar. Usa el botón de carcasa para alternar entre sólida, rayos X y desactivada. Los servos inferiores comparten eje con los brazos. Los servos superiores, dentro de la cabeza, mueven los discos grises de las cejas mediante una bieleta. Los cables delanteros conectan la placa de pruebas con el sensor óptico verde. Las piezas son mallas independientes; las proporciones y el cableado se han estimado a partir de fotos y vídeos.",
+  "Video of the AGV running on the track":"Vídeo del AGV recorriendo la pista",
+  "Track layout with numbered checkpoints 0 to 5 and the robot's planned route drawn in red":"Diseño de la pista con puntos de control numerados del 0 al 5 y la ruta prevista del robot en rojo",
+  "Track and route plan":"Pista y ruta prevista","Early build of the robot with a breadboard, wiring, line sensor array and drive wheel":"Prototipo inicial del robot con placa de pruebas, cableado, sensores de línea y rueda motriz","Electronics prototype":"Prototipo electrónico",
+  "CAD render of the custom chassis cover, styled with eye and teeth":"Render CAD de la cubierta del chasis personalizado, con ojos y dientes","Custom chassis cover (CAD)":"Cubierta del chasis a medida (CAD)",
+  "Final assembled robot with the custom cover fitted, on the track":"Robot completamente montado, con la cubierta a medida, sobre la pista","Final assembly":"Montaje final",
+  "Request video":"Solicitar vídeo","CAD / photos":"CAD / fotos",
+  "Fireman Robot":"Fireman Robot","A pneumatic robot that climbs a ladder while carrying a beaker of water.":"Un robot neumático que sube por una escalera mientras transporta un vaso de agua.",
+  "Climb a ladder and carry a full beaker of water to the top without spilling it.":"Subir por una escalera y llevar hasta arriba un vaso lleno de agua sin derramarla.",
+  "Designed, built and tested the robot, from the mechanism and pneumatic circuit through to iterative testing.":"Diseñé, construí y probé el robot, desde el mecanismo y el circuito neumático hasta las pruebas iterativas.",
+  "Pneumatics":"Neumática","Mechanism design":"Diseño de mecanismos","Test and iterate":"Probar e iterar",
+  "The robot ascended the ladder and delivered an empty beaker. In a head-to-head race against another team's robot, some water spilled when the beaker was full. Keeping the water steady at race speed is the next improvement.":"El robot subió por la escalera y entregó el vaso vacío. En una carrera directa contra el robot de otro equipo, se derramó parte del agua cuando el vaso estaba lleno. El próximo paso es estabilizar el agua a velocidad de carrera.",
+  "Fireman robot racing against another team's robot":"El robot Fireman compite contra el robot de otro equipo",
+  "SolidWorks model of the Fireman robot with a beaker holder and green ladder hooks":"Modelo SolidWorks del robot Fireman con soporte para el vaso y ganchos verdes para la escalera","Beaker holder and ladder hooks (SolidWorks)":"Soporte del vaso y ganchos para la escalera (SolidWorks)",
+  "SolidWorks front view of the Fireman robot's red linkage and blue actuators between the green hooks":"Vista frontal en SolidWorks de la bieleta roja y los actuadores azules del robot Fireman entre los ganchos verdes","Linkage and actuators, front view (SolidWorks)":"Bieleta y actuadores, vista frontal (SolidWorks)",
+  "SolidWorks angled view of the Fireman robot's linkage, actuators and hooks":"Vista en ángulo en SolidWorks de la bieleta, los actuadores y los ganchos del robot Fireman","Linkage and actuators, angled view (SolidWorks)":"Bieleta y actuadores, vista en ángulo (SolidWorks)",
+  "Embedded Systems on PIC16F690":"Sistemas integrados con PIC16F690","Automated timers and temperature sensing, written close to the metal.":"Temporizadores automáticos y medición de temperatura programados a bajo nivel.",
+  "Build small, reliable embedded devices that read sensors and run timed logic with tight resources.":"Crear dispositivos integrados pequeños y fiables que lean sensores y ejecuten tareas temporizadas con recursos limitados.",
+  "Designed, built and programmed multiple systems. I wrote and debugged the firmware in C and Assembly using MPLAB.":"Diseñé, construí y programé varios sistemas. Escribí y depuré el firmware en C y Assembly con MPLAB.",
+  "Several working timer and temperature-sensor builds running on a single microcontroller family.":"Varios prototipos funcionales de temporizadores y sensores de temperatura, basados en una misma familia de microcontroladores.",
+  "Breadboard build with a two-digit seven-segment display, resistors, a microcontroller chip and jumper wires":"Montaje en placa de pruebas con pantalla de siete segmentos de dos dígitos, resistencias, microcontrolador y cables puente","Breadboard build with two-digit display":"Montaje en placa de pruebas con pantalla de dos dígitos",
+  "Technical skills":"Habilidades técnicas","Programming Languages":"Lenguajes de programación","Hardware and software tools":"Herramientas de hardware y software","Methodologies":"Metodologías",
+  "SolidWorks (Certified Associate)":"SolidWorks (Certified Associate)","PLC and automation":"PLC y automatización","UR3e collaborative robot":"Robot colaborativo UR3e","Control systems and simulation":"Sistemas de control y simulación","Robot kinematics":"Cinemática robótica","Parametric CAD and product design":"CAD paramétrico y diseño de producto","Electrical design and control panel commissioning":"Diseño eléctrico y puesta en marcha de cuadros de control","Embedded debugging":"Depuración de sistemas integrados",
+  "Experience and education":"Experiencia y formación","Sep 2025 – Jun 2026":"sep. 2025 – jun. 2026","Sep 2025 – Apr 2026":"sep. 2025 – abr. 2026","Apr 2024 – Dec 2024":"abr. 2024 – dic. 2024","Aug 2026":"ago. 2026","Aug 2025":"ago. 2025",
+  "Teaching Assistant, DCU Engineering Faculty":"Asistente de docencia, Facultad de Ingeniería de DCU","Ran undergraduate tutorials and laboratory seminars, giving structured technical guidance on core topics.":"Impartí tutorías y seminarios de laboratorio para estudiantes de grado, con orientación técnica estructurada sobre temas fundamentales.",
+  "Teaching Assistant, Centre for Talented Youth Ireland (CTYI)":"Asistente de docencia, Centre for Talented Youth Ireland (CTYI)","Assisted the lead instructors in the classroom, supervised students and handled day-to-day admin. When an instructor was unavailable, I stepped in at short notice and taught the specialised sessions myself so the class stayed on schedule.":"Apoyé al profesorado principal en el aula, supervisé al alumnado y gestioné las tareas administrativas diarias. Cuando faltó un docente, asumí sus sesiones especializadas con poca antelación para mantener el calendario de clases.",
+  "Electrical Design Engineer Intern, Murphy International":"Becario de ingeniería de diseño eléctrico, Murphy International","Produced electrical and control design documentation for large-scale wastewater treatment plants. Led control panel commissioning and electrical testing for capital projects, and met or beat project deadlines.":"Preparé documentación de diseño eléctrico y de control para grandes plantas de tratamiento de aguas residuales. Lideré la puesta en marcha de cuadros de control y las pruebas eléctricas de proyectos de inversión, cumpliendo los plazos previstos o adelantándolos.",
+  "Motor control centre in a switch room, with rows of labelled panels, selector switches and drive displays":"Centro de control de motores en una sala eléctrica, con paneles etiquetados, selectores y pantallas de variadores","Motor control centre (MCC)":"Centro de control de motores (MCC)",
+  "Three ABB variable speed drives with labelled cables running along cable tray, two marked Extraction Fan 1 and Fan 2":"Tres variadores de velocidad ABB con cables etiquetados en bandeja, dos para los ventiladores de extracción 1 y 2","Variable speed drives (VSDs)":"Variadores de velocidad (VSD)",
+  "Education and certifications":"Formación y certificaciones","MEng Mechatronic Engineering, Dublin City University":"Máster en Ingeniería Mecatrónica, Dublin City University","2:1 (Hons) across both degrees, 3.3 GPA. Robotics, control systems and simulation, electromechanical systems.":"Nota 2:1 (honores) en ambos grados, promedio 3,3. Robótica, sistemas de control y simulación, sistemas electromecánicos.",
+  "BEng Mechatronic Engineering, Dublin City University":"Grado en Ingeniería Mecatrónica, Dublin City University","Advanced mathematics, software engineering, engineering mechanics, CAD and product design.":"Matemáticas avanzadas, ingeniería de software, mecánica de ingeniería, CAD y diseño de producto.",
+  "Certification":"Certificación","Certified SolidWorks Associate":"Certified SolidWorks Associate","Advanced CAD and parametric modelling.":"CAD avanzado y modelado paramétrico.",
+  "General Certificate of Education, British School of Gran Canaria":"General Certificate of Education, British School of Gran Canaria","A-Levels: Physics A, Spanish A*, German A, Maths B. All-Round Scholarship recipient.":"A-Levels: Física A, Español A*, Alemán A, Matemáticas B. Becario de excelencia integral.",
+  "I'm open to mechatronics, robotics, controls and embedded roles. I hold a Spanish citizenship and EU passport, so I can work in the EU without sponsorship.":"Estoy buscando oportunidades en mecatrónica, robótica, control y sistemas integrados. Tengo ciudadanía española y pasaporte de la UE, por lo que puedo trabajar en la UE sin patrocinio.",
+  "LinkedIn: Agustin Rivero Martel":"LinkedIn: Agustín Rivero Martel","Your name":"Tu nombre","Your email":"Tu correo electrónico","Message":"Mensaje","Send message":"Enviar mensaje","This opens your email app with the message ready to send.":"Esto abrirá tu aplicación de correo con el mensaje preparado.",
+  "Portfolio message from ":"Mensaje desde el portafolio de ","Opening your email app. If nothing happens, email me directly at agustinrivero1303@gmail.com.":"Abriendo tu aplicación de correo. Si no se abre, escríbeme directamente a agustinrivero1303@gmail.com.",
+  "Close":"Cerrar","Expanded media":"Contenido multimedia ampliado"
+};
+var attrNames=['alt','aria-label','title','placeholder','content'], originals=new WeakMap(), attrOriginals=new WeakMap();
+function norm(s){return String(s).trim().replace(/\s+/g,' ')}
+function translateText(n){
+  if(!originals.has(n))originals.set(n,n.nodeValue);
+  var original=originals.get(n),m=original.match(/^(\s*)([\s\S]*?)(\s*)$/),key=norm(m[2]),value=es[key];
+  n.nodeValue=document.documentElement.lang==='es'&&value!==undefined?m[1]+value+m[3]:original;
+}
+function translateAttrs(el){
+  var saved=attrOriginals.get(el)||{};
+  attrNames.forEach(function(name){
+    if(!el.hasAttribute(name))return;
+    if(!(name in saved))saved[name]=el.getAttribute(name);
+    var original=saved[name],key=norm(original),value=es[key];
+    if(name==='content'&&el.matches('meta[name="description"]')&&document.documentElement.lang==='es')value=es['Mechatronic engineer building robots, embedded systems and industrial control. DCU MEng 2026. EU passport holder.'];
+    var next=document.documentElement.lang==='es'&&value!==undefined?value:original;
+    if(el.getAttribute(name)!==next)el.setAttribute(name,next);
+  });
+  attrOriginals.set(el,saved);
+}
+function translateTree(root){
+  if(root.nodeType===Node.TEXT_NODE){translateText(root);return}
+  if(root.nodeType===Node.ELEMENT_NODE)translateAttrs(root);
+  var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),node;
+  while((node=walker.nextNode()))translateText(node);
+  if(root.nodeType===Node.ELEMENT_NODE)root.querySelectorAll('*').forEach(translateAttrs);
+}
+var languageButtons=document.querySelectorAll('[data-language]'),resume=document.getElementById('resume');
+function updateResume(){
+  var spanish=document.documentElement.lang==='es';
+  var subject=spanish?'Solicitud de CV – Agustín Rivero Martel':'Resume Request – Agustín Rivero Martel';
+  var body=spanish?'Hola Agustín,\n\nMe interesa recibir una copia de tu currículum. ¿Podrías enviármela, por favor?\n\nUn saludo':'Hello Agustín,\n\nI am interested in receiving a copy of your resume. Could you please send it to me?\n\nKind regards';
+  resume.href='mailto:agustinrivero1303@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+}
+function setLanguage(lang,save){
+  var x=window.scrollX,y=window.scrollY;
+  document.documentElement.lang=lang;
+  languageButtons.forEach(function(b){var active=b.dataset.language===lang;b.setAttribute('aria-pressed',String(active));b.classList.toggle('active',active)});
+  translateTree(document.body);
+  document.title=lang==='es'?'Agustín Rivero Martel | Ingeniero mecatrónico':'Agustín Rivero Martel | Mechatronic Engineer';
+  updateResume();
+  if(save){try{localStorage.setItem('language',lang)}catch(e){}}
+  requestAnimationFrame(function(){window.scrollTo(x,y)});
+}
+languageButtons.forEach(function(b){b.addEventListener('click',function(){setLanguage(b.dataset.language,true)})});
+var initial='en';try{if(localStorage.getItem('language')==='es')initial='es'}catch(e){}
+setLanguage(initial,false);
+new MutationObserver(function(records){records.forEach(function(r){if(r.type==='attributes')translateAttrs(r.target);else r.addedNodes.forEach(translateTree)})}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:attrNames});
 })();
 </script>
 </body>
