@@ -455,9 +455,9 @@ function init(){
     cap(n.clone().add(new T.Vector3(-s*.06,-.05,.1)),.15,R+.2,0x08080a);
     var lp=lidPose(s),g=new T.Group();g.position.copy(lp.c);g.quaternion.setFromUnitVectors(Y,lp.ax);shell.add(g);g.updateMatrixWorld(true);
     /* curved brow follows the dome while keeping the original servo pivot and link endpoint */
-    function browPoint(x,z){var p=lp.c.clone().add(new T.Vector3(x,0,z).applyQuaternion(g.quaternion));return ctr.clone().addScaledVector(p.sub(ctr).normalize(),R+.55)}
+    function browPoint(x,z){var p=lp.c.clone().add(new T.Vector3(x,0,z).applyQuaternion(g.quaternion));return ctr.clone().addScaledVector(p.sub(ctr).normalize(),R+.8)}
     var browCurve=new T.CatmullRomCurve3([[-3,2],[-2.8,1.05],[-2,-.1],[-1,-.6],[0,-.8],[1,-.6],[2,-.1],[2.8,1.05],[3,2]].map(function(p){return g.worldToLocal(browPoint(p[0],p[1]))}));
-    g.add(new T.Mesh(new T.TubeGeometry(browCurve,32,.42,10,false),M(0x9da4b8,.6)));
+    g.add(new T.Mesh(new T.TubeGeometry(browCurve,32,.58,10,false),M(0x9da4b8,.6)));
     /* compact pad keeps the existing link end seated at the same pivot */
     C(.68,.68,.28,24,0x7f879c,0,-.33,0,g,null,.6);
   });
