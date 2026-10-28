@@ -438,6 +438,29 @@ function init(){
   function dir(az,el){return new T.Vector3(Math.cos(el)*Math.sin(az),Math.sin(el),Math.cos(el)*Math.cos(az))}
   function tan(n,v){return v.clone().sub(n.clone().multiplyScalar(v.dot(n))).normalize()}
   function lidPose(s){var ax=new T.Vector3(s*.45,.25,.85).normalize(),nl=dir(s*.95,.72);return {ax:ax,c:ctr.clone().addScaledVector(nl,R-.3).addScaledVector(ax,.9)}}
+  function browGeo(g,eyeNormal,eyeRadius){
+    /* A solid half-disc follows the dome. Its straight edge sits just above the eye. */
+    var n=eyeNormal.clone().normalize(),up=tan(n,Y),across=new T.Vector3(1,0,0).addScaledVector(n,-n.x).normalize();
+    var eyeCenter=ctr.clone().addScaledVector(n,R+.1),radius=eyeRadius*1.08,center=eyeCenter.clone().addScaledVector(up,eyeRadius+.38),rings=10,steps=48,row=steps+1;
+    var pos=[],idx=[];
+    function vertex(rho,theta,shellRadius){var p=center.clone().addScaledVector(across,radius*rho*Math.cos(theta)).addScaledVector(up,radius*rho*Math.sin(theta));p.sub(ctr).normalize().multiplyScalar(shellRadius).add(ctr);return g.worldToLocal(p)}
+    for(var layer=0;layer<2;layer++)for(var i=0;i<=rings;i++)for(var j=0;j<=steps;j++){
+      var rho=i/rings,theta=Math.PI*j/steps,p=vertex(rho,theta,layer===0?R+.95:R+.42);pos.push(p.x,p.y,p.z);
+    }
+    var layerSize=(rings+1)*row;
+    for(var layer=0;layer<2;layer++)for(var ri=0;ri<rings;ri++)for(var sj=0;sj<steps;sj++){
+      var a=layer*layerSize+ri*row+sj,b=a+row;
+      if(layer===0)idx.push(a,b,a+1,a+1,b,b+1);else idx.push(a,a+1,b,a+1,b+1,b);
+    }
+    function quad(a,b,c,d){idx.push(a,b,c,a,c,d)}
+    for(var ri=0;ri<rings;ri++){
+      var a=ri*row,b=a+row,ai=layerSize+a,bi=layerSize+b;
+      quad(a,ai,bi,b);
+      a+=steps;b+=steps;ai+=steps;bi+=steps;quad(a,b,bi,ai);
+    }
+    for(var sj=0;sj<steps;sj++){var a=rings*row+sj,b=a+1;quad(a,b,layerSize+b,layerSize+a)}
+    var geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(pos,3));geo.setIndex(idx);geo.computeVertexNormals();return geo;
+  }
   function link(a,b,r,c,g){var d=b.clone().sub(a),len=d.length(),m=new T.Mesh(new T.CylinderGeometry(r,r,len,8),M(c,.5));m.position.copy(a).addScaledVector(d,.5);m.quaternion.setFromUnitVectors(Y,d.normalize());g.add(m)}
   var inner=G('shell_inner',shell);
   function cap(n,al,r,c){var g=new T.Group();g.position.copy(ctr);g.quaternion.setFromUnitVectors(Y,n.clone().normalize());g.add(new T.Mesh(new T.SphereGeometry(r,24,8,0,Math.PI*2,0,al),M(c,.55)));shell.add(g)}
@@ -454,10 +477,9 @@ function init(){
     cap(n,.3,R+.1,0xf2f2f4);
     cap(n.clone().add(new T.Vector3(-s*.06,-.05,.1)),.15,R+.2,0x08080a);
     var lp=lidPose(s),g=new T.Group();g.position.copy(lp.c);g.quaternion.setFromUnitVectors(Y,lp.ax);shell.add(g);g.updateMatrixWorld(true);
-    /* curved brow follows the dome while keeping the original servo pivot and link endpoint */
-    function browPoint(x,z){var p=lp.c.clone().add(new T.Vector3(x,0,z).applyQuaternion(g.quaternion));return ctr.clone().addScaledVector(p.sub(ctr).normalize(),R+.8)}
-    var browCurve=new T.CatmullRomCurve3([[-3,2],[-2.8,1.05],[-2,-.1],[-1,-.6],[0,-.8],[1,-.6],[2,-.1],[2.8,1.05],[3,2]].map(function(p){return g.worldToLocal(browPoint(p[0],p[1]))}));
-    g.add(new T.Mesh(new T.TubeGeometry(browCurve,32,.58,10,false),M(0x9da4b8,.6)));
+    /* Filled, outward-facing half-disc follows the shell above each eye. */
+    var eyeNormal=dir(s*1.1,.45),eyeRadius=(R+.1)*Math.sin(.3);
+    g.add(new T.Mesh(browGeo(g,eyeNormal,eyeRadius),new T.MeshStandardMaterial({color:0x9da4b8,roughness:.6,metalness:0,side:T.DoubleSide})));
     /* compact pad keeps the existing link end seated at the same pivot */
     C(.68,.68,.28,24,0x7f879c,0,-.33,0,g,null,.6);
   });
