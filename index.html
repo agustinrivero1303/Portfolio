@@ -111,6 +111,9 @@ p{margin:0}
 .gal img{width:100%;height:100%;object-fit:contain;display:block}
 .gal.two{grid-template-columns:repeat(2,1fr)}
 .hero .photo .fr{display:block}
+.hero .photo .robot-sequence{box-sizing:border-box;display:grid;grid-template-rows:minmax(0,1fr) 32px minmax(0,1fr);gap:6px;width:100%;aspect-ratio:3/4;max-height:480px;padding:8px;border-radius:12px;overflow:hidden;background:var(--tag)}
+.hero .photo .robot-sequence img{width:100%;height:100%;max-height:none;min-height:0;aspect-ratio:auto;object-fit:contain;object-position:center;border-radius:6px;display:block;background:#fff}
+.hero .photo .sequence-arrow{display:grid;place-items:center;color:var(--accent);font:700 2rem/1 var(--mono)}
 .hero .me{float:right;width:clamp(120px,18vw,190px);height:auto;aspect-ratio:1;border-radius:50%;object-fit:cover;margin:0 0 16px 24px;border:3px solid var(--accent);background:var(--tag)}
 .gal.one{grid-template-columns:minmax(0,320px)}.gal.one .fr{aspect-ratio:3/4}.gal.one img{object-fit:cover}
 .gal.three{grid-template-columns:repeat(3,1fr)}
@@ -172,7 +175,7 @@ footer{padding:28px 0;color:var(--muted);font-size:.88rem}
         <a class="btn alt" href="mailto:agustinrivero1303@gmail.com" id="resume">Request Resume</a>
       </div>
     </div>
-    <figure class="photo"><span class="fr"><img src="Images/UR3e%20arm%20with%20with%20parts%20tray%20on%20bench.jpeg" width="1200" height="1600" alt="UR3e collaborative robot arm with a gripper, set up on a lab bench"></span><figcaption>The UR3e used in my Robot Trainer project.</figcaption></figure>
+    <figure class="photo"><div class="fr robot-sequence"><img src="Images/Two-Degree%20of%20freedom%20robot%20arm.png" width="327" height="180" alt="Two-degree-of-freedom robot arm schematic with labeled robot base, joints, and links"><span class="sequence-arrow" aria-hidden="true">↓</span><img src="Images/6-axis%20manipulator%20UR3e.png" width="208" height="422" alt="Six-axis UR3e manipulator diagram with labeled joint axes"></div><figcaption>The UR3e used in my Robot Trainer project.</figcaption></figure>
 <figure id="arm">
       <svg id="armsvg" viewBox="0 0 320 260" role="group" aria-label="Interactive two-joint robot arm. Drag the joints or use the sliders to change the angles.">
         <path d="M20 220H300M60 20V240" fill="none" stroke="var(--line)" stroke-width="1"/>
@@ -364,7 +367,7 @@ function render(){
   p=pt(E,45,t1);$('ref').setAttribute('d','M'+E+'L'+p);
   $('s1').value=t1;$('s2').value=t2;
   $('o1').textContent=Math.round(t1)+'°';$('o2').textContent=Math.round(t2)+'°';
-  $('xy').textContent='tip x = '+((W[0]-P.x)/L1).toFixed(2)+', y = '+((P.y-W[1])/L1).toFixed(2)+' (in link-1 lengths)';
+  $('xy').textContent=(document.documentElement.lang==='es'?'punta x = ':'tip x = ')+((W[0]-P.x)/L1).toFixed(2)+', y = '+((P.y-W[1])/L1).toFixed(2)+(document.documentElement.lang==='es'?' (en longitudes del primer eslabón)':' (in link-1 lengths)');
 }
 var drag=null;
 function xy(e){var r=svg.getBoundingClientRect();return [(e.clientX-r.left)*320/r.width,(e.clientY-r.top)*260/r.height]}
@@ -597,9 +600,13 @@ var es={
   "Agustín Rivero Martel | Mechatronic Engineer":"Agustín Rivero Martel | Ingeniero mecatrónico",
   "Mechatronic engineer building robots, embedded systems and industrial control. DCU MEng 2026. EU passport holder.":"Ingeniero mecatrónico que desarrolla robots, sistemas integrados y soluciones de control industrial. Máster en DCU (2026). Ciudadano de la UE.",
   "Mechatronic Engineer":"Ingeniero mecatrónico",
+  "Portrait of Agustín Rivero Martel":"Retrato de Agustín Rivero Martel",
+  "Robot Trainer (Final Year Master's Project)":"Robot Trainer (proyecto de fin de máster)",
   "Passionate about the combination of mechanical, electronic, and software systems to develop innovative engineering solutions.":"Me apasiona combinar sistemas mecánicos, electrónicos y de software para desarrollar soluciones de ingeniería innovadoras.",
   "View Projects":"Ver proyectos","Request Resume":"Solicitar CV",
   "The UR3e used in my Robot Trainer project.":"El UR3e utilizado en mi proyecto Robot Trainer.",
+  "Two-degree-of-freedom robot arm schematic with labeled robot base, joints, and links":"Esquema del brazo robótico de dos grados de libertad, con la base, las articulaciones y los eslabones identificados.",
+  "Six-axis UR3e manipulator diagram with labeled joint axes":"Diagrama del manipulador UR3e de seis ejes con los ejes de las articulaciones identificados.",
   "Interactive two-joint robot arm. Drag the joints or use the sliders to change the angles.":"Brazo robótico interactivo de dos articulaciones. Arrastra las articulaciones o usa los controles deslizantes para cambiar los ángulos.",
   "Two-joint manipulator, the model behind my Robot Trainer project. Drag the elbow or the tip, or use the sliders.":"Manipulador de dos articulaciones, el modelo de mi proyecto Robot Trainer. Arrastra el codo o el extremo, o usa los controles deslizantes.",
   "Joint 1 angle in degrees":"Ángulo de la articulación 1 en grados","Joint 2 angle in degrees":"Ángulo de la articulación 2 en grados",
@@ -616,7 +623,8 @@ var es={
   "Tech stack and methods":"Tecnologías y métodos","Forward kinematics":"Cinemática directa","Homogeneous transforms":"Transformaciones homogéneas",
   "Result":"Resultado",
   "The robot performs four movements in a pick-and-place sequence. Each is a unique combination of the base angle θ1 and the elbow angle θ3, the only two moving joints. The other four joints stay fixed, so the six-axis UR3e behaves like a two-axis arm. For each waypoint, the kinematic model's predicted tool position was compared with the PolyScope teach pendant. The x and y positions matched within 0.3 to 14.3 mm. The z position was off by a consistent 25.8 to 29.9 mm, most likely because the model uses nominal rather than factory-calibrated DH parameters.":"El robot ejecuta cuatro movimientos en una secuencia de recogida y colocación. Cada uno combina de forma distinta el ángulo de la base θ1 y el del codo θ3, las únicas articulaciones móviles. Las otras cuatro permanecen fijas, por lo que el UR3e de seis ejes funciona como un brazo de dos ejes. En cada punto de referencia se comparó la posición de la herramienta prevista por el modelo cinemático con la indicada por el mando PolyScope. Las posiciones x e y coincidieron con diferencias de entre 0,3 y 14,3 mm. La posición z presentó una diferencia constante de entre 25,8 y 29,9 mm, probablemente porque el modelo usa parámetros DH nominales y no los calibrados de fábrica.",
-  "Waypoint":"Punto de referencia","Difference between model and teach pendant, in mm.":"Diferencia entre el modelo y el mando PolyScope, en mm.",
+  "Waypoint":"Punto de referencia",
+  "tip x = ":"punta x = ","Difference between model and teach pendant, in mm.":"Diferencia entre el modelo y el mando PolyScope, en mm.",
   "Media":"Material audiovisual","Video of the UR3e Robot Trainer in operation":"Vídeo del Robot Trainer UR3e en funcionamiento","Your browser cannot play this video.":"Tu navegador no puede reproducir este vídeo.",
   "Agustín presenting the UR3e Robot Trainer with its teach pendant at the DCU project expo":"Agustín presenta el Robot Trainer UR3e con su mando en la exposición de proyectos de DCU",
   "Presenting at the DCU expo, May 2026":"Presentación en la exposición de DCU, mayo de 2026",
@@ -657,7 +665,8 @@ var es={
   "Designed, built and programmed multiple systems. I wrote and debugged the firmware in C and Assembly using MPLAB.":"Diseñé, construí y programé varios sistemas. Escribí y depuré el firmware en C y Assembly con MPLAB.",
   "Several working timer and temperature-sensor builds running on a single microcontroller family.":"Varios prototipos funcionales de temporizadores y sensores de temperatura, basados en una misma familia de microcontroladores.",
   "Breadboard build with a two-digit seven-segment display, resistors, a microcontroller chip and jumper wires":"Montaje en placa de pruebas con pantalla de siete segmentos de dos dígitos, resistencias, microcontrolador y cables puente","Breadboard build with two-digit display":"Montaje en placa de pruebas con pantalla de dos dígitos",
-  "Technical skills":"Habilidades técnicas","Programming Languages":"Lenguajes de programación","Hardware and software tools":"Herramientas de hardware y software","Methodologies":"Metodologías",
+  "Technical skills":"Habilidades técnicas","Programming Languages":"Lenguajes de programación",
+  "C and C++":"C y C++","Assembly":"Ensamblador","MATLAB and R":"MATLAB y R","Hardware and software tools":"Herramientas de hardware y software","Methodologies":"Metodologías",
   "SolidWorks (Certified Associate)":"SolidWorks (Certified Associate)","PLC and automation":"PLC y automatización","UR3e collaborative robot":"Robot colaborativo UR3e","Control systems and simulation":"Sistemas de control y simulación","Robot kinematics":"Cinemática robótica","Parametric CAD and product design":"CAD paramétrico y diseño de producto","Electrical design and control panel commissioning":"Diseño eléctrico y puesta en marcha de cuadros de control","Embedded debugging":"Depuración de sistemas integrados",
   "Experience and education":"Experiencia y formación","Sep 2025 – Jun 2026":"sep. 2025 – jun. 2026","Sep 2025 – Apr 2026":"sep. 2025 – abr. 2026","Apr 2024 – Dec 2024":"abr. 2024 – dic. 2024","Aug 2026":"ago. 2026","Aug 2025":"ago. 2025",
   "Teaching Assistant, DCU Engineering Faculty":"Asistente de docencia, Facultad de Ingeniería de DCU","Ran undergraduate tutorials and laboratory seminars, giving structured technical guidance on core topics.":"Impartí tutorías y seminarios de laboratorio para estudiantes de grado, con orientación técnica estructurada sobre temas fundamentales.",
@@ -713,6 +722,8 @@ function setLanguage(lang,save){
   languageButtons.forEach(function(b){var active=b.dataset.language===lang;b.setAttribute('aria-pressed',String(active));b.classList.toggle('active',active)});
   translateTree(document.body);
   document.title=lang==='es'?'Agustín Rivero Martel | Ingeniero mecatrónico':'Agustín Rivero Martel | Mechatronic Engineer';
+  var description=document.querySelector('meta[name="description"]');
+  if(description)description.content=lang==='es'?es['Mechatronic engineer building robots, embedded systems and industrial control. DCU MEng 2026. EU passport holder.']:'Mechatronic engineer building robots, embedded systems and industrial control. DCU MEng 2026. EU passport holder.';
   updateResume();
   if(save){try{localStorage.setItem('language',lang)}catch(e){}}
   requestAnimationFrame(function(){window.scrollTo(x,y)});
