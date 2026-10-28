@@ -111,9 +111,9 @@ p{margin:0}
 .gal img{width:100%;height:100%;object-fit:contain;display:block}
 .gal.two{grid-template-columns:repeat(2,1fr)}
 .hero .photo .fr{display:block}
-.hero .photo .robot-sequence{box-sizing:border-box;display:grid;grid-template-rows:minmax(0,1fr) 32px minmax(0,1fr);gap:6px;width:100%;aspect-ratio:3/4;max-height:480px;padding:8px;border-radius:12px;overflow:hidden;background:var(--tag)}
+.hero .photo .robot-sequence{box-sizing:border-box;display:grid;grid-template-rows:minmax(0,1.6fr) 32px minmax(0,1fr);gap:6px;width:100%;aspect-ratio:3/4;max-height:480px;padding:8px;border-radius:12px;overflow:hidden;background:var(--tag)}
 .hero .photo .robot-sequence img{width:100%;height:100%;max-height:none;min-height:0;aspect-ratio:auto;object-fit:contain;object-position:center;border-radius:6px;display:block;background:#fff}
-.hero .photo .sequence-arrow{display:grid;place-items:center;color:var(--accent);font:700 2rem/1 var(--mono)}
+.hero .photo .sequence-arrow{display:grid;place-items:center;color:var(--accent);font:700 2rem/1 var(--mono);animation:sequence-float 1.8s ease-in-out infinite}@keyframes sequence-float{0%,100%{transform:translateY(-3px)}50%{transform:translateY(3px)}}@media (prefers-reduced-motion:reduce){.hero .photo .sequence-arrow{animation:none}}
 .hero .me{float:right;width:clamp(120px,18vw,190px);height:auto;aspect-ratio:1;border-radius:50%;object-fit:cover;margin:0 0 16px 24px;border:3px solid var(--accent);background:var(--tag)}
 .gal.one{grid-template-columns:minmax(0,320px)}.gal.one .fr{aspect-ratio:3/4}.gal.one img{object-fit:cover}
 .gal.three{grid-template-columns:repeat(3,1fr)}
@@ -175,7 +175,7 @@ footer{padding:28px 0;color:var(--muted);font-size:.88rem}
         <a class="btn alt" href="mailto:agustinrivero1303@gmail.com" id="resume">Request Resume</a>
       </div>
     </div>
-    <figure class="photo"><div class="fr robot-sequence"><img src="Images/Two-Degree%20of%20freedom%20robot%20arm.png" width="327" height="180" alt="Two-degree-of-freedom robot arm schematic with labeled robot base, joints, and links"><span class="sequence-arrow" aria-hidden="true">↓</span><img src="Images/6-axis%20manipulator%20UR3e.png" width="208" height="422" alt="Six-axis UR3e manipulator diagram with labeled joint axes"></div><figcaption>The UR3e used in my Robot Trainer project.</figcaption></figure>
+    <figure class="photo"><div class="fr robot-sequence"><img src="Images/6-axis%20manipulator%20UR3e.png" width="208" height="422" alt="Six-axis UR3e manipulator diagram with labeled joint axes"><span class="sequence-arrow" aria-hidden="true">↓</span><img src="Images/Two-Degree%20of%20freedom%20robot%20arm.png" width="327" height="180" alt="Two-degree-of-freedom robot arm schematic with labeled robot base, joints, and links"></div><figcaption>Comparison of the Full 6-Axis UR3e Manipulator and Its Simplified 2-Axis Model</figcaption></figure>
 <figure id="arm">
       <svg id="armsvg" viewBox="0 0 320 260" role="group" aria-label="Interactive two-joint robot arm. Drag the joints or use the sliders to change the angles.">
         <path d="M20 220H300M60 20V240" fill="none" stroke="var(--line)" stroke-width="1"/>
@@ -604,7 +604,7 @@ var es={
   "Robot Trainer (Final Year Master's Project)":"Robot Trainer (proyecto de fin de máster)",
   "Passionate about the combination of mechanical, electronic, and software systems to develop innovative engineering solutions.":"Me apasiona combinar sistemas mecánicos, electrónicos y de software para desarrollar soluciones de ingeniería innovadoras.",
   "View Projects":"Ver proyectos","Request Resume":"Solicitar CV",
-  "The UR3e used in my Robot Trainer project.":"El UR3e utilizado en mi proyecto Robot Trainer.",
+  "Comparison of the Full 6-Axis UR3e Manipulator and Its Simplified 2-Axis Model":"Comparación entre el manipulador UR3e completo de 6 ejes y su modelo simplificado de 2 ejes.",
   "Two-degree-of-freedom robot arm schematic with labeled robot base, joints, and links":"Esquema del brazo robótico de dos grados de libertad, con la base, las articulaciones y los eslabones identificados.",
   "Six-axis UR3e manipulator diagram with labeled joint axes":"Diagrama del manipulador UR3e de seis ejes con los ejes de las articulaciones identificados.",
   "Interactive two-joint robot arm. Drag the joints or use the sliders to change the angles.":"Brazo robótico interactivo de dos articulaciones. Arrastra las articulaciones o usa los controles deslizantes para cambiar los ángulos.",
