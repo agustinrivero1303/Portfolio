@@ -237,7 +237,7 @@ footer{padding:28px 0;color:var(--muted);font-size:.88rem}
           <div><dt>My role and actions</dt><dd>Co-engineer. I architected, integrated and debugged the low-level embedded C that drives the steering and locomotion mechanisms.</dd></div>
           <div><dt>Tech stack and methods</dt><dd class="tags"><span>Embedded C</span><span>Motor control</span><span>Steering and drive</span><span>System integration</span></dd></div>
           <div><dt>Result</dt><dd class="result">Delivered a fully working autonomous vehicle built from scratch. Add speed, accuracy or lap results here.</dd></div>
-          <div><dt>3D model</dt><dd><div class="v3d" id="v3d" tabindex="0" role="img" aria-label="Interactive 3D model of the autonomous mobile robot. Drag to rotate, or use the arrow keys."><p class="v3d-msg" id="v3dmsg">Loading 3D model...</p></div><div class="v3d-ctl"><button type="button" id="v3shell">Shell: solid</button><button type="button" id="v3reset">Reset view</button></div><p class="note3d">Drag to rotate. Use the Shell button to switch between solid, x-ray and off. Lower servos sit on the same axis as the arms. Upper servos are mounted inside the head. The front cables run from the breadboard to the green optical sensor. Parts are separate meshes, and proportions and wire routing are estimated from the photos and videos.</p></dd></div>
+          <div><dt>3D model</dt><dd><div class="v3d" id="v3d" tabindex="0" role="img" aria-label="Interactive 3D model of the autonomous mobile robot. Drag to rotate, or use the arrow keys."><p class="v3d-msg" id="v3dmsg">Loading 3D model...</p></div><div class="v3d-ctl"><button type="button" id="v3shell">Shell: solid</button><button type="button" id="v3reset">Reset view</button></div><p class="note3d">Drag to rotate. Use the Shell button to switch between solid, x-ray and off. Lower servos sit on the same axis as the arms. Upper servos inside the head drive the grey eyebrow lids through a linkage. The front cables run from the breadboard to the green optical sensor. Parts are separate meshes, and proportions and wire routing are estimated from the photos and videos.</p></dd></div>
           <div><dt>Media</dt><dd class="gal"><video controls preload="metadata" playsinline src="Images/Mobile%20Robotics%20Video.mp4" aria-label="Video of the AGV running on the track">Your browser cannot play this video.</video>
 <figure><span class="fr"><img src="Images/Track.png" width="780" height="388" loading="lazy" alt="Track layout with numbered checkpoints 0 to 5 and the robot's planned route drawn in red"></span><figcaption>Track and route plan</figcaption></figure>
 <figure><span class="fr"><img src="Images/Early%20robot%20build.png" width="331" height="271" loading="lazy" alt="Early build of the robot with a breadboard, wiring, line sensor array and drive wheel"></span><figcaption>Electronics prototype</figcaption></figure>
@@ -437,6 +437,28 @@ function init(){
   var R=13,cy=14,zf=6,BL=22,ctr=new T.Vector3(0,cy,zf),WHITE=0xf2f2f4,SH=0x34353b;
   function dir(az,el){return new T.Vector3(Math.cos(el)*Math.sin(az),Math.sin(el),Math.cos(el)*Math.cos(az))}
   function tan(n,v){return v.clone().sub(n.clone().multiplyScalar(v.dot(n))).normalize()}
+  function browGeo(g,n,eyeRadius,side){
+    /* Rounded half-disc lid, seated on the shell and mirrored over each eye. */
+    n=n.clone().normalize();var up=tan(n,Y),across=new T.Vector3(1,0,0).addScaledVector(n,-n.x).normalize().multiplyScalar(side),tilt=side*.42;
+    var around=up.clone().multiplyScalar(Math.cos(tilt)).addScaledVector(across,Math.sin(tilt));
+    var diameter=across.clone().multiplyScalar(Math.cos(tilt)).addScaledVector(up,-Math.sin(tilt));
+    var eyeCenter=ctr.clone().addScaledVector(n,R+.1),radius=eyeRadius*.83,center=eyeCenter.clone().addScaledVector(around,eyeRadius*.42),rings=10,steps=48,row=steps+1,backRadius=R+.55,frontRadius=R+1.02,pos=[],idx=[];
+    function point(rho,theta,shellRadius){var p=center.clone().addScaledVector(diameter,radius*rho*Math.cos(theta)).addScaledVector(around,radius*rho*Math.sin(theta));p.sub(ctr).normalize().multiplyScalar(shellRadius).add(ctr);return p}
+    for(var layer=0;layer<2;layer++)for(var i=0;i<=rings;i++)for(var j=0;j<=steps;j++){
+      var p=point(i/rings,Math.PI*j/steps,layer===0?frontRadius:backRadius);p=g.worldToLocal(p);pos.push(p.x,p.y,p.z);
+    }
+    var layerSize=(rings+1)*row;
+    for(var layer=0;layer<2;layer++)for(var ri=0;ri<rings;ri++)for(var sj=0;sj<steps;sj++){
+      var a=layer*layerSize+ri*row+sj,b=a+row;if(layer===0)idx.push(a,b,a+1,a+1,b,b+1);else idx.push(a,a+1,b,a+1,b+1,b);
+    }
+    function quad(a,b,c,d){idx.push(a,b,c,a,c,d)}
+    for(var ri=0;ri<rings;ri++){var a=ri*row,b=a+row,ai=layerSize+a,bi=layerSize+b;quad(a,ai,bi,b);a+=steps;b+=steps;ai+=steps;bi+=steps;quad(a,b,bi,ai)}
+    for(var sj=0;sj<steps;sj++){var a=rings*row+sj,b=a+1;quad(a,b,layerSize+b,layerSize+a)}
+    var geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(pos,3));geo.setIndex(idx);geo.computeVertexNormals();
+    var pivotWorld=point(0,0,backRadius),pivot=g.worldToLocal(pivotWorld),end=g.worldToLocal(point(1,0,backRadius));
+    return {geo:geo,pivot:pivot,axis:end.sub(pivot).normalize(),worldPivot:pivotWorld};
+  }
+  function link(a,b,r,c,g){var d=b.clone().sub(a),len=d.length(),m=new T.Mesh(new T.CylinderGeometry(r,r,len,8),M(c,.5));m.position.copy(a).addScaledVector(d,.5);m.quaternion.setFromUnitVectors(Y,d.normalize());g.add(m)}
   var inner=G('shell_inner',shell);
   function cap(n,al,r,c){var g=new T.Group();g.position.copy(ctr);g.quaternion.setFromUnitVectors(Y,n.clone().normalize());g.add(new T.Mesh(new T.SphereGeometry(r,24,8,0,Math.PI*2,0,al),M(c,.55)));shell.add(g)}
   /* shell: barrel, rim, rear lip, head dome */
@@ -447,10 +469,15 @@ function init(){
   var ra=Math.asin(5.7/R),rim=new T.Mesh(new T.RingGeometry(R-.5,R+.35,40,1,-ra,Math.PI+2*ra),MD(0x2b2c31,.8));rim.rotation.y=Math.PI;rim.position.set(0,cy,zf-BL);shell.add(rim);
   var dome=new T.Mesh(new T.SphereGeometry(R,40,20,0,Math.PI*2,0,Math.PI/2),MD(SH,.75));dome.rotation.x=Math.PI/2;dome.position.copy(ctr);shell.add(dome);
   /* eyes: sclera, pupil, slanted eyelid */
+  var browAnchors={};
   [-1,1].forEach(function(s){
     var n=dir(s*1.1,.45);
     cap(n,.3,R+.1,0xf2f2f4);
     cap(n.clone().add(new T.Vector3(-s*.06,-.05,.1)),.15,R+.2,0x08080a);
+    var eyeRadius=(R+.1)*Math.sin(.3),brow=browGeo(shell,n,eyeRadius,s),hinge=new T.Group();
+    hinge.position.copy(brow.pivot);brow.geo.translate(-brow.pivot.x,-brow.pivot.y,-brow.pivot.z);
+    hinge.add(new T.Mesh(brow.geo,new T.MeshStandardMaterial({color:0x9da4b8,roughness:.6,metalness:0,side:T.DoubleSide})));shell.add(hinge);
+    C(.68,.68,.28,24,0x7f879c,0,0,0,hinge,null,.6);browAnchors[s]=brow.worldPivot;
   });
   /* mouth: red band + teeth rows */
   var mb=new T.Mesh(new T.SphereGeometry(R+.15,48,2,Math.PI/2-.95,1.9,Math.PI/2+.33,.42),new T.MeshStandardMaterial({color:0xc8202a,roughness:.5,side:T.DoubleSide}));mb.position.copy(ctr);shell.add(mb);
@@ -534,12 +561,13 @@ function init(){
     wire([[s*10.2,9.5,AZ-.7],[s*10,10.2,.6],[s*8.7,10.2,-.3],[s*7.2,8.8,-.2]],RD,.12,cab2);
     wire([[s*10.2,9.8,AZ-.7],[s*9.9,10.6,.2],[s*8.6,10.6,-2.4],[s*7.4,8.8,-4.5]],BN,.12,cab2);
   });
-  /* upper servos inside the head, bolted to the shell */
+  /* upper servos inside the head drive the mirrored eyebrow lids */
   [-1,1].forEach(function(s){
     var n=dir(s*.8,.42),upT=tan(n,Y),side=upT.clone().cross(n),P=ctr.clone().addScaledVector(n,R-2.6);
     var sg=new T.Group();sg.position.copy(P);sg.quaternion.setFromRotationMatrix(new T.Matrix4().makeBasis(side,upT,n));inner.add(sg);
     B(2.3,2.9,1.2,0x2f6bd6,0,0,0,sg,.5);B(.9,.9,.05,0xf2f2f2,0,0,-.63,sg);C(.9,.9,.25,16,0xf2f2f2,0,1,.75,sg,'z');
     C(.3,.3,2,10,0xb9bec8,-1,-1.1,1.6,sg,'z',.4);C(.3,.3,2,10,0xb9bec8,1,-1.1,1.6,sg,'z',.4);
+    var horn=P.clone().addScaledVector(upT,1).addScaledVector(n,.9);link(horn,browAnchors[s],.22,0xb9bec8,inner);
     var horn=P.clone().addScaledVector(upT,1).addScaledVector(n,.9);
     [OR,RD,BN].forEach(function(c,k){
       var end=P.clone().addScaledVector(upT,-1.4).addScaledVector(side,(k-1)*.45).addScaledVector(n,-.2);
@@ -637,7 +665,7 @@ var es={
   "3D model":"Modelo 3D","Loading 3D model...":"Cargando modelo 3D...","3D view is not available on this device.":"La vista 3D no está disponible en este dispositivo.",
   "Interactive 3D model of the autonomous mobile robot. Drag to rotate, or use the arrow keys.":"Modelo 3D interactivo del robot móvil autónomo. Arrástralo para girarlo o usa las teclas de flecha.",
   "Shell: solid":"Carcasa: sólida","Shell: x-ray":"Carcasa: rayos X","Shell: off":"Carcasa: desactivada","Reset view":"Restablecer vista",
-  "Drag to rotate. Use the Shell button to switch between solid, x-ray and off. Lower servos sit on the same axis as the arms. Upper servos are mounted inside the head. The front cables run from the breadboard to the green optical sensor. Parts are separate meshes, and proportions and wire routing are estimated from the photos and videos.":"Arrastra para girar. Usa el botón de carcasa para alternar entre sólida, rayos X y desactivada. Los servos inferiores comparten eje con los brazos. Los servos superiores están montados dentro de la cabeza. Los cables delanteros conectan la placa de pruebas con el sensor óptico verde. Las piezas son mallas independientes; las proporciones y el cableado se han estimado a partir de fotos y vídeos.",
+  "Drag to rotate. Use the Shell button to switch between solid, x-ray and off. Lower servos sit on the same axis as the arms. Upper servos inside the head drive the grey eyebrow lids through a linkage. The front cables run from the breadboard to the green optical sensor. Parts are separate meshes, and proportions and wire routing are estimated from the photos and videos.":"Arrastra para girar. Usa el botón de carcasa para alternar entre sólida, rayos X y desactivada. Los servos inferiores comparten eje con los brazos. Los servos superiores, dentro de la cabeza, mueven las cubiertas grises de los ojos mediante una bieleta. Los cables delanteros conectan la placa de pruebas con el sensor óptico verde. Las piezas son mallas independientes; las proporciones y el cableado se han estimado a partir de fotos y vídeos.",
   "Video of the AGV running on the track":"Vídeo del AGV recorriendo la pista",
   "Track layout with numbered checkpoints 0 to 5 and the robot's planned route drawn in red":"Diseño de la pista con puntos de control numerados del 0 al 5 y la ruta prevista del robot en rojo",
   "Track and route plan":"Pista y ruta prevista","Early build of the robot with a breadboard, wiring, line sensor array and drive wheel":"Prototipo inicial del robot con placa de pruebas, cableado, sensores de línea y rueda motriz","Electronics prototype":"Prototipo electrónico",
