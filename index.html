@@ -135,15 +135,9 @@ p{margin:0}
 .timeline p{color:var(--muted);max-width:46em}
 .sub{font-size:1.05rem;margin:44px 0 20px;font-weight:700}
 
-.contact{display:grid;gap:40px;grid-template-columns:1fr 1.1fr}
-.contact ul{list-style:none;padding:0;margin:0;display:grid;gap:12px;font-size:1.05rem}
-form{display:grid;gap:14px}
+#contact ul{list-style:none;padding:0;margin:0;display:grid;gap:12px;font-size:1.05rem}
 label{font-weight:600;font-size:.92rem;display:grid;gap:6px}
-input,textarea{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:11px 12px;width:100%}
-textarea{min-height:130px;resize:vertical}
-form .btn{cursor:pointer;font-size:1rem;justify-self:start}
-.note{font-size:.85rem;color:var(--muted)}
-@media (max-width:760px){.contact{grid-template-columns:1fr}}
+input{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:11px 12px;width:100%}
 footer{padding:28px 0;color:var(--muted);font-size:.88rem}
 </style>
 </head>
@@ -312,22 +306,13 @@ footer{padding:28px 0;color:var(--muted);font-size:.88rem}
 <section id="contact">
   <div class="wrap">
     <h2>Contact</h2>
-    <div class="contact">
-      <div>
-        <p style="margin-bottom:18px;color:var(--muted)">I'm open to mechatronics, robotics, controls and embedded roles. I hold a Spanish citizenship and EU passport, so I can work in the EU without sponsorship.</p>
-        <ul>
-          <li><a href="mailto:agustinrivero1303@gmail.com">agustinrivero1303@gmail.com</a></li>
-          <li><a href="https://www.linkedin.com/search/results/all/?keywords=Agustin%20Rivero%20Martel">LinkedIn: Agustin Rivero Martel</a></li>
-          <li><a href="tel:+34601424935">+34 601 424 935</a></li>
-        </ul>
-      </div>
-      <form id="cf">
-        <label>Your name<input name="name" required autocomplete="name"></label>
-        <label>Your email<input name="email" type="email" required autocomplete="email"></label>
-        <label>Message<textarea name="msg" required></textarea></label>
-        <button class="btn" type="submit">Send message</button>
-        <p class="note" id="status" role="status">This opens your email app with the message ready to send.</p>
-      </form>
+    <div>
+      <p style="margin-bottom:18px;color:var(--muted)">I'm open to mechatronics, robotics, controls and embedded roles. I hold a Spanish citizenship and EU passport, so I can work in the EU without sponsorship.</p>
+      <ul>
+        <li><a href="mailto:agustinrivero1303@gmail.com">agustinrivero1303@gmail.com</a></li>
+        <li><a href="https://www.linkedin.com/search/results/all/?keywords=Agustin%20Rivero%20Martel">LinkedIn: Agustin Rivero Martel</a></li>
+        <li><a href="tel:+34601424935">+34 601 424 935</a></li>
+      </ul>
     </div>
   </div>
 </section>
@@ -335,16 +320,6 @@ footer{padding:28px 0;color:var(--muted);font-size:.88rem}
 
 <footer><div class="wrap">© 2026 Agustín Rivero Martel</div></footer>
 
-<script>
-document.getElementById('cf').addEventListener('submit',function(e){
-  e.preventDefault();
-  var f=e.target,n=f.name.value,es=document.documentElement.lang==='es';
-  var m=f.msg.value+'\n\n'+(es?'De: ':'From: ')+n+' ('+f.email.value+')';
-  var subject=es?'Mensaje desde el portafolio de '+n:'Portfolio message from '+n;
-  location.href='mailto:agustinrivero1303@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(m);
-  document.getElementById('status').textContent='Opening your email app. If nothing happens, email me directly at agustinrivero1303@gmail.com.';
-});
-</script>
 <script>
 (function(){
 var P={x:60,y:220},L1=95,L2=85,t1=45,t2=-30,D=Math.PI/180,svg=document.getElementById('armsvg'),$=function(i){return document.getElementById(i)};
@@ -699,8 +674,7 @@ var es={
   "Certification":"Certificación","Certified SolidWorks Associate":"Certified SolidWorks Associate","Advanced CAD and parametric modelling.":"CAD avanzado y modelado paramétrico.",
   "General Certificate of Education, British School of Gran Canaria":"General Certificate of Education, British School of Gran Canaria","A-Levels: Physics A, Spanish A*, German A, Maths B. All-Round Scholarship recipient.":"A-Levels: Física A, Español A*, Alemán A, Matemáticas B. Becario de excelencia integral.",
   "I'm open to mechatronics, robotics, controls and embedded roles. I hold a Spanish citizenship and EU passport, so I can work in the EU without sponsorship.":"Estoy buscando oportunidades en mecatrónica, robótica, control y sistemas integrados. Tengo ciudadanía española y pasaporte de la UE, por lo que puedo trabajar en la UE sin patrocinio.",
-  "LinkedIn: Agustin Rivero Martel":"LinkedIn: Agustín Rivero Martel","Your name":"Tu nombre","Your email":"Tu correo electrónico","Message":"Mensaje","Send message":"Enviar mensaje","This opens your email app with the message ready to send.":"Esto abrirá tu aplicación de correo con el mensaje preparado.",
-  "Portfolio message from ":"Mensaje desde el portafolio de ","Opening your email app. If nothing happens, email me directly at agustinrivero1303@gmail.com.":"Abriendo tu aplicación de correo. Si no se abre, escríbeme directamente a agustinrivero1303@gmail.com.",
+  "LinkedIn: Agustin Rivero Martel":"LinkedIn: Agustín Rivero Martel",
   "Close":"Cerrar","Expanded media":"Contenido multimedia ampliado"
 };
 var attrNames=['alt','aria-label','title','placeholder','content'], originals=new WeakMap(), attrOriginals=new WeakMap();
@@ -749,3 +723,4 @@ new MutationObserver(function(records){records.forEach(function(r){if(r.type==='
 </script>
 </body>
 </html>
+
