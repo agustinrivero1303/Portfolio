@@ -487,8 +487,7 @@ function init(){
     var lp=lidPose(s),g=new T.Group();g.position.copy(lp.c);g.quaternion.setFromUnitVectors(Y,lp.ax);shell.add(g);g.updateMatrixWorld(true);
     /* Filled, outward-facing half-disc follows the shell above each eye. */
     var eyeNormal=dir(s*1.1,.45),eyeRadius=(R+.1)*Math.sin(.3),brow=browGeo(g,eyeNormal,eyeRadius,s),hinge=new T.Group();
-    /* The previous pose tilted each brow 90 degrees off the shell; undo that turn about its fixed diameter. */
-    hinge.position.copy(brow.pivot);hinge.quaternion.setFromAxisAngle(brow.axis,0);brow.geo.translate(-brow.pivot.x,-brow.pivot.y,-brow.pivot.z);
+    hinge.position.copy(brow.pivot);hinge.quaternion.setFromAxisAngle(brow.axis,s*Math.PI/2);brow.geo.translate(-brow.pivot.x,-brow.pivot.y,-brow.pivot.z);
     hinge.add(new T.Mesh(brow.geo,new T.MeshStandardMaterial({color:0x9da4b8,roughness:.6,metalness:0,side:T.DoubleSide})));g.add(hinge);
     /* The edge pivot remains the mechanical attachment point for the original servo link. */
     C(.68,.68,.28,24,0x7f879c,0,0,0,hinge,null,.6);browAnchors[s]=brow.worldPivot;
