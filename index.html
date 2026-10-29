@@ -172,7 +172,7 @@ footer{padding:28px 0;color:var(--muted);font-size:.88rem}
       <p class="lead">Passionate about the combination of mechanical, electronic, and software systems to develop innovative engineering solutions.</p>
       <div class="btns">
         <a class="btn" href="#projects">View Projects</a>
-        <a class="btn alt" href="mailto:agustinrivero1303@gmail.com" id="resume">Request Resume</a>
+        <a class="btn alt" href="#contact" id="resume">Request Resume</a>
       </div>
     </div>
     <figure class="photo"><div class="fr robot-sequence"><img src="Images/6-axis%20manipulator%20UR3e.png" width="208" height="422" alt="Six-axis UR3e manipulator diagram with labeled joint axes"><span class="sequence-arrow" aria-hidden="true">↓</span><img src="Images/Two-Degree%20of%20freedom%20robot%20arm.png" width="327" height="180" alt="Two-degree-of-freedom robot arm schematic with labeled robot base, joints, and links"></div><figcaption>Comparison of the Full 6-Axis UR3e Manipulator and Its Simplified 2-Axis Model</figcaption></figure>
@@ -729,13 +729,7 @@ function translateTree(root){
   while((node=walker.nextNode()))translateText(node);
   if(root.nodeType===Node.ELEMENT_NODE)root.querySelectorAll('*').forEach(translateAttrs);
 }
-var languageButtons=document.querySelectorAll('[data-language]'),resume=document.getElementById('resume');
-function updateResume(){
-  var spanish=document.documentElement.lang==='es';
-  var subject=spanish?'Solicitud de CV – Agustín Rivero Martel':'Resume Request – Agustín Rivero Martel';
-  var body=spanish?'Hola Agustín,\n\nMe interesa recibir una copia de tu currículum. ¿Podrías enviármela, por favor?\n\nUn saludo':'Hello Agustín,\n\nI am interested in receiving a copy of your resume. Could you please send it to me?\n\nKind regards';
-  resume.href='mailto:agustinrivero1303@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
-}
+var languageButtons=document.querySelectorAll('[data-language]');
 function setLanguage(lang,save){
   var x=window.scrollX,y=window.scrollY;
   document.documentElement.lang=lang;
@@ -744,7 +738,6 @@ function setLanguage(lang,save){
   document.title=lang==='es'?'Agustín Rivero Martel | Ingeniero mecatrónico':'Agustín Rivero Martel | Mechatronic Engineer';
   var description=document.querySelector('meta[name="description"]');
   if(description)description.content=lang==='es'?es['Mechatronic engineer building robots, embedded systems and industrial control. DCU MEng 2026. EU passport holder.']:'Mechatronic engineer building robots, embedded systems and industrial control. DCU MEng 2026. EU passport holder.';
-  updateResume();
   if(save){try{localStorage.setItem('language',lang)}catch(e){}}
   requestAnimationFrame(function(){window.scrollTo(x,y)});
 }
