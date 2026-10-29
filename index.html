@@ -439,7 +439,7 @@ function init(){
   function tan(n,v){return v.clone().sub(n.clone().multiplyScalar(v.dot(n))).normalize()}
   function browGeo(g,n,eyeRadius,side){
     /* Rounded half-disc lid, seated on the shell and mirrored over each eye. */
-    n=n.clone().normalize();var up=tan(n,Y),across=new T.Vector3(1,0,0).addScaledVector(n,-n.x).normalize().multiplyScalar(side),tilt=side*.42;
+    n=n.clone().normalize();var up=tan(n,Y),across=new T.Vector3(1,0,0).addScaledVector(n,-n.x).normalize().multiplyScalar(side),tilt=.42;
     var around=up.clone().multiplyScalar(Math.cos(tilt)).addScaledVector(across,Math.sin(tilt));
     var diameter=across.clone().multiplyScalar(Math.cos(tilt)).addScaledVector(up,-Math.sin(tilt));
     var eyeCenter=ctr.clone().addScaledVector(n,R+.1),radius=eyeRadius*.83,center=eyeCenter.clone().addScaledVector(around,eyeRadius*.42),rings=10,steps=48,row=steps+1,backRadius=R+.55,frontRadius=R+1.02,pos=[],idx=[];
@@ -568,7 +568,6 @@ function init(){
     B(2.3,2.9,1.2,0x2f6bd6,0,0,0,sg,.5);B(.9,.9,.05,0xf2f2f2,0,0,-.63,sg);C(.9,.9,.25,16,0xf2f2f2,0,1,.75,sg,'z');
     C(.3,.3,2,10,0xb9bec8,-1,-1.1,1.6,sg,'z',.4);C(.3,.3,2,10,0xb9bec8,1,-1.1,1.6,sg,'z',.4);
     var horn=P.clone().addScaledVector(upT,1).addScaledVector(n,.9);link(horn,browAnchors[s],.22,0xb9bec8,inner);
-    var horn=P.clone().addScaledVector(upT,1).addScaledVector(n,.9);
     [OR,RD,BN].forEach(function(c,k){
       var end=P.clone().addScaledVector(upT,-1.4).addScaledVector(side,(k-1)*.45).addScaledVector(n,-.2);
       wire([[s*6+(k-1)*.35,8.85,.1],[s*6.2,12,2.5],[s*6.6,16.5,8],[end.x,end.y,end.z]],c,.12,inner);
