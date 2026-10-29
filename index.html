@@ -437,9 +437,9 @@ function init(){
   var R=13,cy=14,zf=6,BL=22,ctr=new T.Vector3(0,cy,zf),WHITE=0xf2f2f4,SH=0x34353b;
   function dir(az,el){return new T.Vector3(Math.cos(el)*Math.sin(az),Math.sin(el),Math.cos(el)*Math.cos(az))}
   function tan(n,v){return v.clone().sub(n.clone().multiplyScalar(v.dot(n))).normalize()}
-  function browGeo(g,n,eyeRadius,side){
-    /* Rounded half-disc lid, seated on the shell and mirrored over each eye. */
-    n=n.clone().normalize();var up=tan(n,Y),across=new T.Vector3(1,0,0).addScaledVector(n,-n.x).normalize().multiplyScalar(side),tilt=.42;
+  function browGeo(g,n,eyeRadius){
+    /* Build one canonical rounded half-disc lid; its partner is a true X-plane mirror. */
+    n=n.clone().normalize();var up=tan(n,Y),across=new T.Vector3(1,0,0).addScaledVector(n,-n.x).normalize(),tilt=.42;
     var around=up.clone().multiplyScalar(Math.cos(tilt)).addScaledVector(across,Math.sin(tilt));
     var diameter=across.clone().multiplyScalar(Math.cos(tilt)).addScaledVector(up,-Math.sin(tilt));
     var eyeCenter=ctr.clone().addScaledVector(n,R+.1),radius=eyeRadius*.83,center=eyeCenter.clone().addScaledVector(around,eyeRadius*.42),rings=10,steps=48,row=steps+1,backRadius=R+.55,frontRadius=R+1.02,pos=[],idx=[];
@@ -469,15 +469,16 @@ function init(){
   var ra=Math.asin(5.7/R),rim=new T.Mesh(new T.RingGeometry(R-.5,R+.35,40,1,-ra,Math.PI+2*ra),MD(0x2b2c31,.8));rim.rotation.y=Math.PI;rim.position.set(0,cy,zf-BL);shell.add(rim);
   var dome=new T.Mesh(new T.SphereGeometry(R,40,20,0,Math.PI*2,0,Math.PI/2),MD(SH,.75));dome.rotation.x=Math.PI/2;dome.position.copy(ctr);shell.add(dome);
   /* eyes: sclera, pupil, slanted eyelid */
-  var browAnchors={};
+  var browAnchors={},browRadius=(R+.1)*Math.sin(.3),canonicalBrow=browGeo(shell,dir(1.1,.45),browRadius);
   [-1,1].forEach(function(s){
     var n=dir(s*1.1,.45);
     cap(n,.3,R+.1,0xf2f2f4);
     cap(n.clone().add(new T.Vector3(-s*.06,-.05,.1)),.15,R+.2,0x08080a);
-    var eyeRadius=(R+.1)*Math.sin(.3),brow=browGeo(shell,n,eyeRadius,s),hinge=new T.Group();
-    hinge.position.copy(brow.pivot);brow.geo.translate(-brow.pivot.x,-brow.pivot.y,-brow.pivot.z);
-    hinge.add(new T.Mesh(brow.geo,new T.MeshStandardMaterial({color:0x9da4b8,roughness:.6,metalness:0,side:T.DoubleSide})));shell.add(hinge);
-    C(.68,.68,.28,24,0x7f879c,0,0,0,hinge,null,.6);browAnchors[s]=brow.worldPivot;
+    var hinge=new T.Group(),browGeoInstance=canonicalBrow.geo.clone(),browPivot=canonicalBrow.pivot.clone(),browAnchor=canonicalBrow.worldPivot.clone();
+    if(s<0){browPivot.x=-browPivot.x;browAnchor.x=-browAnchor.x;hinge.scale.x=-1;}
+    hinge.position.copy(browPivot);browGeoInstance.translate(-canonicalBrow.pivot.x,-canonicalBrow.pivot.y,-canonicalBrow.pivot.z);
+    hinge.add(new T.Mesh(browGeoInstance,new T.MeshStandardMaterial({color:0x9da4b8,roughness:.6,metalness:0,side:T.DoubleSide})));shell.add(hinge);
+    C(.68,.68,.28,24,0x7f879c,0,0,0,hinge,null,.6);browAnchors[s]=browAnchor;
   });
   /* mouth: red band + teeth rows */
   var mb=new T.Mesh(new T.SphereGeometry(R+.15,48,2,Math.PI/2-.95,1.9,Math.PI/2+.33,.42),new T.MeshStandardMaterial({color:0xc8202a,roughness:.5,side:T.DoubleSide}));mb.position.copy(ctr);shell.add(mb);
