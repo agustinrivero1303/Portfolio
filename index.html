@@ -110,6 +110,8 @@ p{margin:0}
 .gal .fr{display:block;background:#fff;border:1px solid var(--line);border-radius:8px;aspect-ratio:4/3;overflow:hidden}
 .gal img{width:100%;height:100%;object-fit:contain;display:block}
 .gal.two{grid-template-columns:repeat(2,1fr)}
+.gal.foundational-agv{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+@media (max-width:760px){.gal.foundational-agv{grid-template-columns:1fr}}
 .hero .photo .fr{display:block}
 .hero .photo .robot-sequence{box-sizing:border-box;display:grid;grid-template-rows:minmax(0,1.6fr) 32px minmax(0,1fr);gap:6px;width:100%;aspect-ratio:3/4;max-height:480px;padding:8px;border-radius:12px;overflow:hidden;background:var(--tag)}
 .hero .photo .robot-sequence img{width:100%;height:100%;max-height:none;min-height:0;aspect-ratio:auto;object-fit:contain;object-position:center;border-radius:6px;display:block;background:#fff}
@@ -224,13 +226,13 @@ footer{padding:28px 0;color:var(--muted);font-size:.88rem}
       </details>
 
       <details class="card" open>
-        <summary><div><h3>Mobile Robotics</h3><div class="when">Automated Guided Vehicle (AGV) · Team project · Dublin City University</div><p class="gist">A custom-engineered chassis and multi-function AGV, built from scratch and fully operational.</p></div></summary>
+        <summary><div><h3>Mobile Robotics</h3><div class="when">Automated Guided Vehicle (AGV) · Team project · Dublin City University</div><p class="gist">A fully operational multi-function AGV developed from a provided chassis, with integrated steering, drive and embedded control.</p></div></summary>
         <div class="body"><dl>
-          <div><dt>Overview</dt><dd>This project highlights a custom-designed Automated Guided Vehicle (AGV) featuring a fully custom-engineered chassis and expanded multi-function operational capabilities.</dd></div>
-          <div><dt>Key highlights</dt><dd><ul class="hl"><li><strong>Custom chassis architecture:</strong> a purpose-built chassis and cover, designed in CAD rather than taken from a kit.</li><li><strong>Multi-functional payload and autonomy integration:</strong> several functions combined in one vehicle.</li><li><strong>Enhanced mobility:</strong> steering and locomotion driven by custom embedded C.</li></ul></dd></div>
+          <div><dt>Overview</dt><dd>Starting with a basic chassis provided for the project, we developed the AGV into a multi-function vehicle, integrating its systems and designing a custom cover in CAD.</dd></div>
+          <div><dt>Key highlights</dt><dd><ul class="hl"><li><strong>Provided chassis development:</strong> the project began with a basic supplied chassis, which the team developed as the platform for the wider vehicle system. We also designed a custom cover in CAD.</li><li><strong>Multi-functional payload and autonomy integration:</strong> several functions combined in one vehicle.</li><li><strong>Enhanced mobility:</strong> steering and locomotion driven by custom embedded C.</li></ul></dd></div>
           <div><dt>My role and actions</dt><dd>Co-engineer. I architected, integrated and debugged the low-level embedded C that drives the steering and locomotion mechanisms.</dd></div>
           <div><dt>Tech stack and methods</dt><dd class="tags"><span>Embedded C</span><span>Motor control</span><span>Steering and drive</span><span>System integration</span></dd></div>
-          <div><dt>Result</dt><dd class="result">Delivered a fully working autonomous vehicle built from scratch.</dd></div>
+          <div><dt>Result</dt><dd class="result">Delivered a fully working autonomous vehicle developed from the provided chassis.</dd></div>
           <div><dt>3D model</dt><dd><div class="v3d" id="v3d" tabindex="0" role="img" aria-label="Interactive 3D model of the autonomous mobile robot. Drag to rotate, or use the arrow keys."><p class="v3d-msg" id="v3dmsg">Loading 3D model...</p></div><div class="v3d-ctl"><button type="button" id="v3shell">Shell: solid</button><button type="button" id="v3reset">Reset view</button></div><p class="note3d">Drag to rotate. Use the Shell button to switch between solid, x-ray and off. Lower servos sit on the same axis as the arms. Upper servos inside the head drive the grey eyebrow lids through a linkage. The front cables run from the breadboard to the green optical sensor. Parts are separate meshes, and proportions and wire routing are estimated from the photos and videos.</p></dd></div>
           <div><dt>Media</dt><dd class="gal"><video controls preload="metadata" playsinline src="Images/Mobile%20Robotics%20Video.mp4" aria-label="Video of the AGV running on the track">Your browser cannot play this video.</video>
 <figure><span class="fr"><img src="Images/Track.png" width="780" height="388" loading="lazy" alt="Track layout with numbered checkpoints 0 to 5 and the robot's planned route drawn in red"></span><figcaption>Track and route plan</figcaption></figure>
@@ -239,6 +241,22 @@ footer{padding:28px 0;color:var(--muted);font-size:.88rem}
 <figure><span class="fr"><img src="Images/Final%20Assembly%20Mobile%20Robotics.png" style="object-position:50% 62%;object-fit:cover" width="1200" height="1600" loading="lazy" alt="Final assembled robot with the custom cover fitted, on the track"></span><figcaption>Final assembly</figcaption></figure></dd></div>
         </dl>
         <div class="links"><a href="#contact">Request video</a></div></div>
+      </details>
+
+      <details class="card" open>
+        <summary><div><h3>Foundational AGV Project</h3><div class="when">Mobile Robotics · First-year team project · Dublin City University · 2021/22</div><p class="gist">A first-year, from-scratch AGV build combining a fabricated aluminium chassis, servo steering and optical line sensing.</p></div></summary>
+        <div class="body"><dl>
+          <div><dt>Problem / goal</dt><dd>Build a wheel-based Automated Guided Vehicle controlled by a microcontroller, using optical sensors and programmed routines to follow a course and demonstrate straight-line driving, reversing, turning and a multi-point turn.</dd></div>
+          <div><dt>My role and actions</dt><dd>As part of a four-person team, I mainly developed the SolidWorks AGV design drawing and the C code for the multi-point turn. The project brought mechanical design, workshop fabrication, electronics and embedded programming together in a complete vehicle.</dd></div>
+          <div><dt>Design and integration</dt><dd>The team designed a compact chassis from aluminium sheet, then integrated a rear-axle DC drive, spur and worm gearing, a servo-driven trapezoidal steering linkage, optical line sensors and a keypad/LCD interface. Ackermann steering calculations set a 35° design limit to reduce tyre scrub. The microcontroller was assembled and tested with the motor, steering servo and sensors before installation in the chassis.</dd></div>
+          <div><dt>Engineering challenge</dt><dd>The multi-point routine depended on timed movements and reliable line detection. Testing traced the main failure to the steering linkage: at a high steering angle it could bind, while the front-heavy vehicle increased wheel friction. The first two turns worked, but the full enhanced sequence was not completed.</dd></div>
+          <div><dt>Tech stack and methods</dt><dd class="tags"><span>SolidWorks</span><span>PIC microcontroller</span><span>Embedded C</span><span>MPLAB X IDE</span><span>Optical / IR sensors</span><span>Servo steering</span><span>Ackermann geometry</span><span>Aluminium fabrication</span><span>Oscilloscope calibration</span></dd></div>
+          <div><dt>Result</dt><dd class="result">Built and integrated a working AGV from scratch. Basic driving and steering were demonstrated; the multi-point turn remained partially complete because of a mechanical steering constraint identified during testing.</dd></div>
+          <div><dt>Media</dt><dd class="gal foundational-agv">
+            <figure><span class="fr"><img src="Images/Foundational%20AGV%20-%20control%20system.png" width="870" height="741" loading="lazy" alt="Foundational AGV prototype showing its keypad, LCD, control board and aluminium chassis"></span><figcaption>AGV prototype and control electronics</figcaption></figure>
+            <figure><span class="fr"><img src="Images/Foundational%20AGV%20-%20chassis%20and%20electronics.jpg" width="700" height="870" loading="lazy" alt="Side view of the foundational AGV chassis, steering, drive wheel and onboard electronics"></span><figcaption>Chassis, steering and drive integration</figcaption></figure>
+          </dd></div>
+        </dl></div>
       </details>
 
       <details class="card">
@@ -624,18 +642,40 @@ var es={
   "Agustín presenting the UR3e Robot Trainer with its teach pendant at the DCU project expo":"Agustín presenta el Robot Trainer UR3e con su mando en la exposición de proyectos de DCU",
   "Presenting at the DCU expo, May 2026":"Presentación en la exposición de DCU, mayo de 2026",
   "UR3e arm with gripper and parts trays on the lab bench":"Brazo UR3e con pinza y bandejas de piezas sobre la mesa del laboratorio","UR3e demonstrator setup":"Montaje del demostrador UR3e",
+  "Foundational AGV Project":"Proyecto fundacional de AGV",
+  "Mobile Robotics · First-year team project · Dublin City University · 2021/22":"Robótica móvil · Proyecto en equipo de primer curso · Dublin City University · 2021/22",
+  "A first-year, from-scratch AGV build combining a fabricated aluminium chassis, servo steering and optical line sensing.":"Construcción de un AGV desde cero en primer curso, con chasis de aluminio fabricado, dirección por servo y detección óptica de línea.",
+  "Problem / goal":"Problema / objetivo",
+  "Build a wheel-based Automated Guided Vehicle controlled by a microcontroller, using optical sensors and programmed routines to follow a course and demonstrate straight-line driving, reversing, turning and a multi-point turn.":"Construir un vehículo de guiado automático con ruedas y microcontrolador, usando sensores ópticos y rutinas programadas para recorrer un circuito y demostrar marcha recta, marcha atrás, giros y un giro multipunto.",
+  "My role and actions":"Mi función y contribuciones",
+  "As part of a four-person team, I mainly developed the SolidWorks AGV design drawing and the C code for the multi-point turn. The project brought mechanical design, workshop fabrication, electronics and embedded programming together in a complete vehicle.":"Como parte de un equipo de cuatro personas, desarrollé principalmente el plano de diseño del AGV en SolidWorks y el código C del giro multipunto. El proyecto integró diseño mecánico, fabricación en taller, electrónica y programación integrada en un vehículo completo.",
+  "Design and integration":"Diseño e integración",
+  "The team designed a compact chassis from aluminium sheet, then integrated a rear-axle DC drive, spur and worm gearing, a servo-driven trapezoidal steering linkage, optical line sensors and a keypad/LCD interface. Ackermann steering calculations set a 35° design limit to reduce tyre scrub. The microcontroller was assembled and tested with the motor, steering servo and sensors before installation in the chassis.":"El equipo diseñó un chasis compacto de chapa de aluminio e integró tracción por eje trasero con motor de CC y engranajes, una dirección trapezoidal accionada por servo, sensores ópticos de línea y una interfaz de teclado y pantalla LCD. Los cálculos de Ackermann fijaron un límite de diseño de 35° para reducir el arrastre de los neumáticos. El microcontrolador se montó y probó con el motor, el servo de dirección y los sensores antes de instalarlo en el chasis.",
+  "Engineering challenge":"Desafío de ingeniería",
+  "The multi-point routine depended on timed movements and reliable line detection. Testing traced the main failure to the steering linkage: at a high steering angle it could bind, while the front-heavy vehicle increased wheel friction. The first two turns worked, but the full enhanced sequence was not completed.":"La rutina multipunto dependía de movimientos temporizados y de una detección fiable de la línea. Las pruebas atribuyeron el principal fallo a la bieleta de dirección: podía atascarse con un ángulo elevado, y el peso delantero aumentaba la fricción de las ruedas. Funcionaron los dos primeros giros, pero no se completó toda la secuencia avanzada.",
+  "PIC microcontroller":"Microcontrolador PIC",
+  "Optical / IR sensors":"Sensores ópticos / infrarrojos",
+  "Servo steering":"Dirección por servo",
+  "Ackermann geometry":"Geometría de Ackermann",
+  "Aluminium fabrication":"Fabricación en aluminio",
+  "Oscilloscope calibration":"Calibración con osciloscopio",
+  "Built and integrated a working AGV from scratch. Basic driving and steering were demonstrated; the multi-point turn remained partially complete because of a mechanical steering constraint identified during testing.":"Se construyó e integró un AGV funcional desde cero. Se demostraron la conducción básica y la dirección; el giro multipunto quedó parcialmente completado debido a una limitación mecánica identificada durante las pruebas.",
+  "Foundational AGV prototype showing its keypad, LCD, control board and aluminium chassis":"Prototipo del AGV con teclado, pantalla LCD, placa de control y chasis de aluminio",
+  "AGV prototype and control electronics":"Prototipo del AGV y electrónica de control",
+  "Side view of the foundational AGV chassis, steering, drive wheel and onboard electronics":"Vista lateral del chasis, la dirección, la rueda motriz y la electrónica integrada del AGV",
+  "Chassis, steering and drive integration":"Integración del chasis, la dirección y la tracción",
   "Request demo or report":"Solicitar una demostración o el informe",
   "Automated Guided Vehicle (AGV) · Team project · Dublin City University":"Vehículo de guiado automático (AGV) · Proyecto en equipo · Dublin City University",
-  "A custom-engineered chassis and multi-function AGV, built from scratch and fully operational.":"Chasis diseñado a medida y AGV multifunción, construido desde cero y plenamente operativo.",
+  "A fully operational multi-function AGV developed from a provided chassis, with integrated steering, drive and embedded control.":"AGV multifunción plenamente operativo, desarrollado a partir de un chasis proporcionado, con dirección, tracción y control integrado.",
   "Overview":"Descripción general",
-  "This project highlights a custom-designed Automated Guided Vehicle (AGV) featuring a fully custom-engineered chassis and expanded multi-function operational capabilities.":"Este proyecto presenta un vehículo de guiado automático (AGV) diseñado a medida, con un chasis propio y capacidades operativas multifunción ampliadas.",
+  "Starting with a basic chassis provided for the project, we developed the AGV into a multi-function vehicle, integrating its systems and designing a custom cover in CAD.":"Partiendo de un chasis básico proporcionado para el proyecto, desarrollamos el AGV como vehículo multifunción, integramos sus sistemas y diseñamos una cubierta a medida en CAD.",
   "Key highlights":"Aspectos destacados",
-  "Custom chassis architecture:":"Arquitectura del chasis a medida:","a purpose-built chassis and cover, designed in CAD rather than taken from a kit.":"chasis y cubierta diseñados en CAD específicamente para el proyecto, en lugar de usar un kit.",
+  "Provided chassis development:":"Desarrollo del chasis proporcionado:","the project began with a basic supplied chassis, which the team developed as the platform for the wider vehicle system. We also designed a custom cover in CAD.":"el proyecto partió de un chasis básico suministrado, que el equipo desarrolló como base del sistema completo del vehículo. También diseñamos una cubierta a medida en CAD.",
   "Multi-functional payload and autonomy integration:":"Integración de carga multifunción y autonomía:","several functions combined in one vehicle.":"varias funciones combinadas en un mismo vehículo.",
   "Enhanced mobility:":"Movilidad mejorada:","steering and locomotion driven by custom embedded C.":"dirección y movimiento controlados mediante software integrado en C, desarrollado a medida.",
   "Co-engineer. I architected, integrated and debugged the low-level embedded C that drives the steering and locomotion mechanisms.":"Coingeniero. Diseñé la arquitectura, integré y depuré el código C integrado de bajo nivel que controla los mecanismos de dirección y movimiento.",
   "Embedded C":"C integrado","Motor control":"Control de motores","Steering and drive":"Dirección y tracción","System integration":"Integración de sistemas",
-  "Delivered a fully working autonomous vehicle built from scratch.":"Se entregó un vehículo autónomo plenamente funcional, construido desde cero.",
+  "Delivered a fully working autonomous vehicle developed from the provided chassis.":"Se entregó un vehículo autónomo plenamente funcional, desarrollado a partir del chasis proporcionado.",
   "3D model":"Modelo 3D","Loading 3D model...":"Cargando modelo 3D...","3D view is not available on this device.":"La vista 3D no está disponible en este dispositivo.",
   "Interactive 3D model of the autonomous mobile robot. Drag to rotate, or use the arrow keys.":"Modelo 3D interactivo del robot móvil autónomo. Arrástralo para girarlo o usa las teclas de flecha.",
   "Shell: solid":"Carcasa: sólida","Shell: x-ray":"Carcasa: rayos X","Shell: off":"Carcasa: desactivada","Reset view":"Restablecer vista",
@@ -718,9 +758,4 @@ function setLanguage(lang,save){
 languageButtons.forEach(function(b){b.addEventListener('click',function(){setLanguage(b.dataset.language,true)})});
 var initial='en';try{if(localStorage.getItem('language')==='es')initial='es'}catch(e){}
 setLanguage(initial,false);
-new MutationObserver(function(records){records.forEach(function(r){if(r.type==='attributes')translateAttrs(r.target);else r.addedNodes.forEach(translateTree)})}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:attrNames});
-})();
-</script>
-</body>
-</html>
-
+new MutationObserver(function(records){records.forEach(function(r){if(r.type==='attributes')translateAttrs(r.target);else r.addedNodes.forEach(translateTree)})}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:attrNa
