@@ -758,4 +758,9 @@ function setLanguage(lang,save){
 languageButtons.forEach(function(b){b.addEventListener('click',function(){setLanguage(b.dataset.language,true)})});
 var initial='en';try{if(localStorage.getItem('language')==='es')initial='es'}catch(e){}
 setLanguage(initial,false);
-new MutationObserver(function(records){records.forEach(function(r){if(r.type==='attributes')translateAttrs(r.target);else r.addedNodes.forEach(translateTree)})}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:attrNa
+new MutationObserver(function(records){records.forEach(function(r){if(r.type==='attributes')translateAttrs(r.target);else r.addedNodes.forEach(translateTree)})}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:attrNames});
+})();
+</script>
+</body>
+</html>
+
