@@ -55,7 +55,8 @@ nav ul a:hover{color:var(--ink);background:var(--tag)}
 .language-flag{display:block;width:16px;height:16px;object-fit:contain;flex:none;border-radius:50%}
 .language button:hover,.language button[aria-pressed="true"]{background:var(--tag);color:var(--ink)}
 .language button[aria-pressed="true"]{border-color:var(--line)}
-.language span{color:var(--line)}
+.language>span{color:var(--line)}
+.language button span{color:var(--ink)}
 @media (max-width:640px){nav .wrap{gap:8px}.language{margin-left:0;gap:0}.language button{min-width:30px;padding:4px 3px;gap:3px}.themes{gap:5px}.themes button{width:24px;height:24px}}
 @media (max-width:640px){nav .brand{display:none}nav ul{margin:0}}
 
