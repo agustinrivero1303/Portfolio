@@ -359,7 +359,9 @@ function render(){
   p=pt(E,45,t1);$('ref').setAttribute('d','M'+E+'L'+p);
   $('s1').value=t1;$('s2').value=t2;
   $('o1').textContent=Math.round(t1)+'°';$('o2').textContent=Math.round(t2)+'°';
-  $('xy').textContent=(document.documentElement.lang==='es'?'punta x = ':'tip x = ')+((W[0]-P.x)/L1).toFixed(2)+', y = '+((P.y-W[1])/L1).toFixed(2)+(document.documentElement.lang==='es'?' (en longitudes del primer eslabón)':' (in link-1 lengths)');
+  var XY={en:['tip x = ',' (in link-1 lengths)'],es:['punta x = ',' (en longitudes del primer eslabón)'],de:['Spitze x = ',' (in Längen des ersten Glieds)']};
+  var xyL=XY[document.documentElement.lang]||XY.en;
+  $('xy').textContent=xyL[0]+((W[0]-P.x)/L1).toFixed(2)+', y = '+((P.y-W[1])/L1).toFixed(2)+xyL[1];
 }
 var drag=null;
 function xy(e){var r=svg.getBoundingClientRect();return [(e.clientX-r.left)*320/r.width,(e.clientY-r.top)*260/r.height]}
@@ -376,6 +378,7 @@ function setT(t,save){document.documentElement.setAttribute('data-theme',t);tb.f
 tb.forEach(function(b){b.addEventListener('click',function(){setT(b.dataset.t,true)})});
 setT(document.documentElement.getAttribute('data-theme')||'light',false);
 $('s2').addEventListener('input',function(e){t2=+e.target.value;render()});
+document.addEventListener('languagechange',render);
 render();
 })();
 </script>
@@ -728,6 +731,66 @@ var de={
   "Technical skills":"Technische Kenntnisse","Programming Languages":"Programmiersprachen","C and C++":"C und C++","Assembly":"Assembler","MATLAB and R":"MATLAB und R","Hardware and software tools":"Hard- und Softwarewerkzeuge","Methodologies":"Methoden","SolidWorks (Certified Associate)":"SolidWorks (Certified Associate)","PLC and automation":"SPS und Automatisierung","UR3e collaborative robot":"Kollaborationsroboter UR3e","Control systems and simulation":"Regelungssysteme und Simulation","Robot kinematics":"Roboterkinematik","Parametric CAD and product design":"Parametrische CAD-Konstruktion und Produktentwicklung","Electrical design and control panel commissioning":"Elektrokonstruktion und Inbetriebnahme von Schaltschränken","Embedded debugging":"Debugging eingebetteter Systeme",
   "Experience and education":"Berufserfahrung und Ausbildung","Teaching Assistant, DCU Engineering Faculty":"Tutor, Ingenieurwissenschaftliche Fakultät der DCU","Teaching Assistant, Centre for Talented Youth Ireland (CTYI)":"Tutor, Centre for Talented Youth Ireland (CTYI)","Electrical Design Engineer Intern, Murphy International":"Praktikant Elektrokonstruktion, Murphy International","Produced electrical and control design documentation for large-scale wastewater treatment plants. Led control panel commissioning and electrical testing for capital projects, and met or beat project deadlines.":"Erstellte Elektro- und Steuerungsunterlagen für große Kläranlagen. Leitete die Inbetriebnahme von Schaltschränken und elektrische Prüfungen bei Investitionsprojekten und hielt Termine ein oder unterschritt sie.","Education and certifications":"Ausbildung und Zertifikate","MEng Mechatronic Engineering, Dublin City University":"MEng Mechatronik, Dublin City University","BEng Mechatronic Engineering, Dublin City University":"BEng Mechatronik, Dublin City University","Certification":"Zertifikat","Advanced CAD and parametric modelling.":"Fortgeschrittene CAD-Konstruktion und parametrische Modellierung.","Contact":"Kontakt","Close":"Schließen","Expanded media":"Vergrößerte Medienansicht"
 };
+Object.assign(de, {
+"About me":"Über mich",
+"Aug 2026":"Aug. 2026",
+"Aug 2025":"Aug. 2025",
+"MEng, DCU, Aug 2026":"MEng, DCU, Aug. 2026",
+"2:1 Hons, 3.3 GPA":"2:1 (Hons), GPA 3,3",
+"EU passport holder":"EU-Passinhaber",
+"English, Spanish, German":"Englisch, Spanisch, Deutsch",
+"Robot Trainer (Final Year Master's Project)":"Robot Trainer (Abschlussprojekt im Master)",
+"Presenting at the DCU expo, May 2026":"Präsentation auf der DCU-Projektausstellung, Mai 2026",
+"Agustín presenting the UR3e Robot Trainer with its teach pendant at the DCU project expo":"Agustín präsentiert den Robot Trainer mit UR3e und Bediengerät auf der DCU-Projektausstellung",
+"UR3e arm with gripper and parts trays on the lab bench":"UR3e-Arm mit Greifer und Teilebehältern auf der Laborbank",
+"Request demo or report":"Demo oder Bericht anfordern",
+"The robot performs four movements in a pick-and-place sequence. Each is a unique combination of the base angle θ1 and the elbow angle θ3, the only two moving joints. The other four joints stay fixed, so the six-axis UR3e behaves like a two-axis arm. For each waypoint, the kinematic model's predicted tool position was compared with the PolyScope teach pendant. The x and y positions matched within 0.3 to 14.3 mm. The z position was off by a consistent 25.8 to 29.9 mm, most likely because the model uses nominal rather than factory-calibrated DH parameters.":"Der Roboter führt vier Bewegungen in einer Pick-and-Place-Sequenz aus. Jede ist eine eigene Kombination aus Basiswinkel θ1 und Ellbogenwinkel θ3, den einzigen beiden bewegten Gelenken. Die anderen vier Gelenke bleiben fixiert, sodass sich der sechsachsige UR3e wie ein zweiachsiger Arm verhält. Für jeden Wegpunkt wurde die vom kinematischen Modell berechnete Werkzeugposition mit dem PolyScope-Bediengerät verglichen. Die x- und y-Positionen stimmten auf 0,3 bis 14,3 mm überein. Die z-Position wich konstant um 25,8 bis 29,9 mm ab, vermutlich weil das Modell nominale statt werkseitig kalibrierter DH-Parameter verwendet.",
+"Mobile Robotics":"Mobile Robotik",
+"Request video":"Video anfordern",
+"Interactive 3D model of the autonomous mobile robot. Drag to rotate, or use the arrow keys.":"Interaktives 3D-Modell des autonomen mobilen Roboters. Zum Drehen ziehen oder die Pfeiltasten verwenden.",
+"Drag to rotate. Use the Shell button to switch between solid, x-ray and off. Lower servos sit on the same axis as the arms. Upper servos inside the head drive the grey eyebrow lids through a linkage. The front cables run from the breadboard to the green optical sensor. Parts are separate meshes, and proportions and wire routing are estimated from the photos and videos.":"Zum Drehen ziehen. Mit der Gehäuse-Schaltfläche zwischen Volumenmodell, Röntgenansicht und ausgeblendet wechseln. Die unteren Servos liegen auf derselben Achse wie die Arme. Die oberen Servos im Kopf bewegen die grauen Augenlider über ein Gestänge. Die vorderen Kabel führen von der Steckplatine zum grünen optischen Sensor. Die Teile sind als einzelne Netze modelliert; Proportionen und Kabelführung wurden anhand von Fotos und Videos geschätzt.",
+"Track layout with numbered checkpoints 0 to 5 and the robot's planned route drawn in red":"Streckenlayout mit nummerierten Kontrollpunkten 0 bis 5 und der geplanten Route des Roboters in Rot",
+"Early build of the robot with a breadboard, wiring, line sensor array and drive wheel":"Frühe Bauphase mit Steckplatine, Verkabelung, Liniensensorfeld und Antriebsrad",
+"CAD render of the custom chassis cover, styled with eye and teeth":"CAD-Rendering der individuellen Fahrgestellabdeckung mit Augen und Zähnen",
+"Final assembled robot with the custom cover fitted, on the track":"Fertig montierter Roboter mit individueller Abdeckung auf der Teststrecke",
+"Foundational AGV prototype showing its keypad, LCD, control board and aluminium chassis":"Prototyp des Grundlagen-AGV mit Tastenfeld, LCD, Steuerplatine und Aluminiumfahrgestell",
+"Side view of the foundational AGV chassis, steering, drive wheel and onboard electronics":"Seitenansicht des Grundlagen-AGV mit Fahrgestell, Lenkung, Antriebsrad und Bordelektronik",
+"A pneumatic robot that climbs a ladder while carrying a beaker of water.":"Ein pneumatischer Roboter, der eine Leiter erklimmt und dabei ein Becherglas mit Wasser transportiert.",
+"Climb a ladder and carry a full beaker of water to the top without spilling it.":"Eine Leiter erklimmen und ein volles Becherglas Wasser ohne Verschütten nach oben bringen.",
+"Designed, built and tested the robot, from the mechanism and pneumatic circuit through to iterative testing.":"Ich habe den Roboter entworfen, gebaut und getestet – vom Mechanismus und dem pneumatischen Schaltkreis bis zu iterativen Tests.",
+"Pneumatics":"Pneumatik",
+"Mechanism design":"Mechanikkonstruktion",
+"Test and iterate":"Testen und iterieren",
+"The robot ascended the ladder and delivered an empty beaker. In a head-to-head race against another team's robot, some water spilled when the beaker was full. Keeping the water steady at race speed is the next improvement.":"Der Roboter stieg die Leiter hinauf und lieferte ein leeres Becherglas. Im direkten Wettlauf gegen den Roboter eines anderen Teams lief bei vollem Becherglas etwas Wasser über. Das Wasser auch bei Wettkampftempo ruhig zu halten, ist die nächste Verbesserung.",
+"Fireman robot racing against another team's robot":"Der Fireman-Roboter tritt gegen den Roboter eines anderen Teams an",
+"SolidWorks model of the Fireman robot with a beaker holder and green ladder hooks":"SolidWorks-Modell des Fireman-Roboters mit Becherglashalterung und grünen Leiterhaken",
+"Beaker holder and ladder hooks (SolidWorks)":"Becherglashalterung und Leiterhaken (SolidWorks)",
+"SolidWorks front view of the Fireman robot's red linkage and blue actuators between the green hooks":"SolidWorks-Frontansicht: rotes Gestänge und blaue Aktoren des Fireman-Roboters zwischen den grünen Haken",
+"Linkage and actuators, front view (SolidWorks)":"Gestänge und Aktoren, Frontansicht (SolidWorks)",
+"SolidWorks angled view of the Fireman robot's linkage, actuators and hooks":"SolidWorks-Schrägansicht von Gestänge, Aktoren und Haken des Fireman-Roboters",
+"Linkage and actuators, angled view (SolidWorks)":"Gestänge und Aktoren, Schrägansicht (SolidWorks)",
+"Embedded Systems on PIC16F690":"Embedded Systems auf dem PIC16F690",
+"Automated timers and temperature sensing, written close to the metal.":"Automatisierte Zeitschaltungen und Temperaturmessung, hardwarenah programmiert.",
+"Build small, reliable embedded devices that read sensors and run timed logic with tight resources.":"Kleine, zuverlässige eingebettete Geräte entwickeln, die Sensoren auslesen und zeitgesteuerte Logik mit knappen Ressourcen ausführen.",
+"Designed, built and programmed multiple systems. I wrote and debugged the firmware in C and Assembly using MPLAB.":"Ich habe mehrere Systeme entworfen, aufgebaut und programmiert. Die Firmware habe ich mit MPLAB in C und Assembler geschrieben und debuggt.",
+"Several working timer and temperature-sensor builds running on a single microcontroller family.":"Mehrere funktionsfähige Zeitschaltungen und Temperatursensor-Aufbauten auf Basis derselben Mikrocontroller-Familie.",
+"Breadboard build with a two-digit seven-segment display, resistors, a microcontroller chip and jumper wires":"Steckplatinenaufbau mit zweistelliger Siebensegmentanzeige, Widerständen, Mikrocontroller und Verbindungskabeln",
+"Breadboard build with two-digit display":"Steckplatinenaufbau mit zweistelliger Anzeige",
+"Siemens PLC":"Siemens-SPS",
+"Sep 2025 – Jun 2026":"Sep. 2025 – Juni 2026",
+"Sep 2025 – Apr 2026":"Sep. 2025 – Apr. 2026",
+"Apr 2024 – Dec 2024":"Apr. 2024 – Dez. 2024",
+"Ran undergraduate tutorials and laboratory seminars, giving structured technical guidance on core topics.":"Ich leitete Tutorien und Laborseminare für Studierende im Grundstudium und gab strukturierte fachliche Anleitung zu Kernthemen.",
+"Assisted the lead instructors in the classroom, supervised students and handled day-to-day admin. When an instructor was unavailable, I stepped in at short notice and taught the specialised sessions myself so the class stayed on schedule.":"Ich unterstützte die verantwortlichen Lehrkräfte im Unterricht, betreute die Teilnehmenden und übernahm die laufende Verwaltung. War eine Lehrkraft verhindert, sprang ich kurzfristig ein und übernahm selbst die Fachsitzungen, damit der Unterricht planmäßig weiterlief.",
+"Motor control centre in a switch room, with rows of labelled panels, selector switches and drive displays":"Motorsteuerzentrale in einem Schaltraum mit Reihen beschrifteter Schaltfelder, Wahlschaltern und Antriebsanzeigen",
+"Motor control centre (MCC)":"Motorsteuerzentrale (MCC)",
+"Three ABB variable speed drives with labelled cables running along cable tray, two marked Extraction Fan 1 and Fan 2":"Drei ABB-Frequenzumrichter mit beschrifteten Kabeln auf der Kabeltrasse, zwei davon für Abluftventilator 1 und 2",
+"Variable speed drives (VSDs)":"Frequenzumrichter (VSD)",
+"2:1 (Hons) across both degrees, 3.3 GPA. Robotics, control systems and simulation, electromechanical systems.":"2:1 (Hons) in beiden Studiengängen, GPA 3,3. Robotik, Regelungstechnik und Simulation, elektromechanische Systeme.",
+"Advanced mathematics, software engineering, engineering mechanics, CAD and product design.":"Höhere Mathematik, Softwaretechnik, Technische Mechanik, CAD und Produktentwicklung.",
+"A-Levels: Physics A, Spanish A*, German A, Maths B. All-Round Scholarship recipient.":"A-Levels: Physik A, Spanisch A*, Deutsch A, Mathematik B. Empfänger des All-Round Scholarship.",
+"I'm open to mechatronics, robotics, controls and embedded roles. I hold a Spanish citizenship and EU passport, so I can work in the EU without sponsorship.":"Ich bin offen für Stellen in Mechatronik, Robotik, Regelungstechnik und eingebetteten Systemen. Ich besitze die spanische Staatsbürgerschaft und einen EU-Pass und kann daher ohne zusätzliche Arbeitsgenehmigung oder Sponsoring in der EU arbeiten."
+});
 var dictionaries={en:{},es:es,de:de};
 var attrNames=['alt','aria-label','title','placeholder','content'], originals=new WeakMap(), attrOriginals=new WeakMap();
 function norm(s){return String(s).trim().replace(/\s+/g,' ')}
@@ -766,6 +829,7 @@ function setLanguage(lang,save){
   if(description)description.content=lang==='es'?es['Mechatronic engineer building robots, embedded systems and industrial control. DCU MEng 2026. EU passport holder.']:lang==='de'?de['Mechatronic engineer building robots, embedded systems and industrial control. DCU MEng 2026. EU passport holder.']:'Mechatronic engineer building robots, embedded systems and industrial control. DCU MEng 2026. EU passport holder.';
   if(save){try{localStorage.setItem('language',lang)}catch(e){}}
   requestAnimationFrame(function(){window.scrollTo(x,y)});
+  document.dispatchEvent(new Event('languagechange'));
 }
 languageButtons.forEach(function(b){b.addEventListener('click',function(){setLanguage(b.dataset.language,true)})});
 var initial='en';try{if(['es','de'].indexOf(localStorage.getItem('language'))!==-1)initial=localStorage.getItem('language')}catch(e){}
